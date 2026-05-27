@@ -5,19 +5,19 @@ const steps = [
   {
     n: '01',
     title: 'Brief',
-    desc: 'A 30-min call. We map your goal, audience, and what success looks like. You leave with a fixed quote and a delivery date.',
+    desc: 'A 30-minute call. We agree on your goal, your audience, and the metric we are chasing. You leave with a fixed quote and a delivery date in writing.',
     micro: 'DAY 0',
   },
   {
     n: '02',
     title: 'Build',
-    desc: "I disappear into the code. Daily Loom updates, a live staging URL, and Slack on-demand. You see progress every single day.",
+    desc: "I disappear into the code. You get a daily Loom walkthrough, a live staging URL that updates on every git push, and Slack access for whatever question pops up.",
     micro: 'DAY 1 → 14',
   },
   {
     n: '03',
     title: 'Launch',
-    desc: "We ship to production. I hand off docs, dashboards, and a 30-day support window. Then I'm one DM away whenever you need me.",
+    desc: "We push to production together. I hand over the repo, a Notion doc, and dashboards for analytics and errors. You get 30 days of fixes on the house.",
     micro: 'GO LIVE',
   },
 ];
@@ -40,10 +40,11 @@ export default function HowItWorks() {
           eyebrow="Process"
           title={
             <>
-              Three steps. <span className="text-matrix">No drama.</span>
+              Three steps from brief to{' '}
+              <span className="text-matrix">launch</span>.
             </>
           }
-          sub="A simple, repeatable flow that's gotten 40+ products to launch. Tight feedback loops, daily updates, zero ghosting."
+          sub="I have used the same flow on 40+ projects. You get a fixed quote on day one, a live staging URL by week two, and 30 days of free fixes after the launch."
         />
 
         <div className="relative grid gap-8 md:grid-cols-3">

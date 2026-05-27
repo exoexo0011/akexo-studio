@@ -18,7 +18,7 @@ export default function Footer() {
         <div className="flex flex-wrap items-center gap-x-6 gap-y-2 font-mono text-[10px] uppercase tracking-[0.25em] text-bone/40">
           <span>© {new Date().getFullYear()} AKEXO</span>
           <span className="hidden md:inline text-matrix/60">/</span>
-          <span>Built by hand. Shipped on Vercel.</span>
+          <span>Written, designed, and shipped by one person.</span>
           <span className="hidden md:inline text-matrix/60">/</span>
           <a
             href="#top"

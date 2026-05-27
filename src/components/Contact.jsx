@@ -51,10 +51,10 @@ export default function Contact() {
           eyebrow="Contact"
           title={
             <>
-              Let's <span className="text-matrix">build</span> something.
+              Send me the <span className="text-matrix">brief</span>.
             </>
           }
-          sub="Pick the channel you live in. I reply within 24h on weekdays. Most calls turn into kickoff the same week."
+          sub="Pick the channel you live in. I reply inside 24 hours on weekdays. Most intro calls turn into a kickoff that same week."
         />
 
         <div className="grid gap-10 lg:grid-cols-[1.1fr_1fr] items-start">
@@ -74,34 +74,35 @@ export default function Contact() {
             </span>
 
             <h3 className="display text-5xl md:text-6xl text-bone mt-5 mb-5">
-              Book a <span className="text-matrix">30-min</span> intro call.
+              Book the <span className="text-matrix">30-minute</span> intro call.
             </h3>
 
             <p className="font-body text-bone/70 max-w-md mb-8">
-              We'll map your project, lock scope, and you'll leave with a
-              quote + delivery date. No pitch deck. No fluff.
+              We map your project, lock the scope, and price it on the call.
+              You leave with a quote, a start date, and the kickoff on my
+              calendar. No deck. No follow-up sales emails.
             </p>
 
             <div className="flex flex-wrap gap-3">
               <a
-                href="mailto:lordforpeace0011@gmail.com?subject=AKEXO%20—%20intro%20call&body=Hey%20Akexo%2C%0A%0AI'd%20like%20to%20book%20a%2030-min%20call%20about%20a%20project."
+                href="mailto:lordforpeace0011@gmail.com?subject=AKEXO%20intro%20call&body=Hey%20Akexo%2C%0A%0AI%20want%20to%20book%20the%2030-minute%20intro%20call.%20Here%20is%20what%20I%20am%20building%3A"
                 className="btn-primary"
               >
                 <Calendar size={16} />
-                Book a call
+                Book the call
               </a>
               <a
                 href="mailto:lordforpeace0011@gmail.com"
                 className="btn-ghost"
               >
                 <Mail size={16} />
-                Email me direct
+                Email me
               </a>
             </div>
 
             <div className="mt-10 grid grid-cols-2 gap-5 border-t border-matrix/20 pt-6 font-mono text-[11px] uppercase tracking-[0.2em]">
               <div className="flex flex-col gap-1">
-                <span className="text-bone/40">Reply within</span>
+                <span className="text-bone/40">Reply window</span>
                 <span className="text-matrix">{'<'} 24h</span>
               </div>
               <div className="flex flex-col gap-1">

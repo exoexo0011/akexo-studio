@@ -107,10 +107,11 @@ export default function Hero() {
             variants={fadeUp}
             className="max-w-2xl font-body text-base sm:text-lg text-bone/70 leading-relaxed"
           >
-            Solo AI developer. I design, build, and ship production-grade
-            websites, apps, AI tools, and automations for founders who need
-            things done <em className="not-italic text-matrix">yesterday</em>.
-            No agencies. No filler. Just clean code and clear results.
+            I'm a solo AI developer. I take your brief on Monday and put a
+            working demo on your screen by{' '}
+            <em className="not-italic text-matrix">Friday</em>. Sites, apps,
+            AI tools, automations: you message me, I write the code. No
+            agency layer between us.
           </motion.p>
 
           <motion.div custom={3} variants={fadeUp} className="flex flex-wrap items-center gap-4 pt-2">
@@ -129,8 +130,8 @@ export default function Hero() {
             className="mt-12 grid grid-cols-3 max-w-xl gap-x-8 gap-y-2 font-mono text-[11px] uppercase tracking-[0.18em]"
           >
             <Stat label="Projects shipped" value="40+" />
-            <Stat label="Avg. delivery" value="14 days" />
-            <Stat label="Stack" value="React · AI · Node" />
+            <Stat label="Median delivery" value="14 days" />
+            <Stat label="Reply window" value="< 24h" />
           </motion.div>
         </motion.div>
       </div>

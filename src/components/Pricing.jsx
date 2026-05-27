@@ -8,11 +8,11 @@ const tiers = [
     code: 'TIER_01',
     price: '$1.5k',
     cadence: 'one-time',
-    pitch: 'For founders validating an idea fast.',
+    pitch: 'For founders testing an idea before they raise.',
     features: [
       '1-page landing site',
       'Mobile-first, animated',
-      'Up to 1 round of revisions',
+      'One round of revisions',
       'Deployed to Vercel',
       '7-day delivery',
     ],
@@ -23,13 +23,13 @@ const tiers = [
     code: 'TIER_02',
     price: '$4.5k',
     cadence: 'one-time',
-    pitch: 'Most clients pick this. Fully custom build.',
+    pitch: 'Most clients pick this. A custom build, designed and shipped from scratch.',
     features: [
-      'Up to 6-page site OR small AI tool',
+      'Up to 6-page site or small AI tool',
       'Custom design system',
-      '3 rounds of revisions',
-      'CMS + analytics + SEO',
-      'AI feature included',
+      'Three rounds of revisions',
+      'CMS, analytics, SEO',
+      'One AI feature included',
       '14-day delivery',
     ],
     featured: true,
@@ -40,14 +40,14 @@ const tiers = [
     code: 'TIER_03',
     price: '$3k',
     cadence: 'per month',
-    pitch: 'Done-for-you ongoing build partner.',
+    pitch: 'I become your in-house dev for a month at a time.',
     features: [
-      '40 hours of dev / month',
+      '40 hours of dev per month',
       'Sites, apps, AI features',
-      'Slack + 24h response',
-      'Weekly Loom reports',
-      'Priority shipping queue',
-      'Cancel anytime',
+      'Slack with a 24h reply window',
+      'Weekly Loom report',
+      'Front of the build queue',
+      'Cancel any month',
     ],
     cta: 'Book intro',
   },
@@ -74,7 +74,7 @@ export default function Pricing() {
               Pick a <span className="text-matrix">lane</span>.
             </>
           }
-          sub="Fixed scope, fixed fee, fixed deadline. No hourly billing surprises. Most projects start within 7 days of signing."
+          sub="Fixed scope. Fixed fee. Fixed deadline. I do not bill by the hour and I do not chase scope. Most projects kick off within seven days of you signing."
         />
 
         <div className="grid gap-5 md:grid-cols-3">
@@ -160,7 +160,7 @@ export default function Pricing() {
         </div>
 
         <p className="mt-10 text-center font-mono text-[11px] uppercase tracking-[0.3em] text-bone/40">
-          Need something custom? <a href="#contact" className="text-matrix hover:underline">Let's talk.</a>
+          Need something between tiers? <a href="#contact" className="text-matrix hover:underline">Email me the scope.</a>
         </p>
       </div>
     </section>

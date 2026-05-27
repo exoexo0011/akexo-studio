@@ -62,7 +62,7 @@ export default function Navbar() {
           href="#contact"
           className="hidden md:inline-flex items-center gap-2 border border-matrix/60 bg-matrix/10 px-4 py-2 font-mono text-[11px] uppercase tracking-[0.2em] text-matrix hover:bg-matrix hover:text-ink transition-colors"
         >
-          Book a call
+          Book the call
           <span aria-hidden>→</span>
         </a>
 
@@ -100,7 +100,7 @@ export default function Navbar() {
                 onClick={() => setOpen(false)}
                 className="mt-3 inline-flex items-center justify-center gap-2 border border-matrix/60 bg-matrix/10 px-4 py-3 font-mono text-xs uppercase tracking-[0.2em] text-matrix"
               >
-                Book a call →
+                Book the call →
               </a>
             </div>
           </motion.div>

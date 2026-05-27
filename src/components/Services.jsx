@@ -7,28 +7,28 @@ const services = [
     icon: Globe,
     title: 'Websites',
     code: 'SVC_01',
-    desc: 'Marketing sites, portfolios, and landing pages built to convert. Fast, responsive, SEO-tuned. React, Next.js, deployed to the edge.',
+    desc: 'Marketing sites, portfolios, and landing pages that turn visitors into clients. I build them in Next.js, push them to the Vercel edge, and they load in under a second.',
     features: ['Next.js / React', 'CMS integration', 'Edge deploy'],
   },
   {
     icon: Smartphone,
     title: 'Mobile Apps',
     code: 'SVC_02',
-    desc: 'Cross-platform iOS + Android apps that feel native. From idea to App Store with backend, auth, and payments wired in.',
+    desc: 'iOS and Android apps that feel native. I take you from idea to App Store with the backend, auth, and Stripe payments already wired up. One codebase, two stores.',
     features: ['React Native', 'Expo / EAS', 'iOS + Android'],
   },
   {
     icon: Sparkles,
     title: 'AI Tools',
     code: 'SVC_03',
-    desc: 'Custom AI products on top of GPT, Claude, and open models. Chatbots, generators, agents, RAG pipelines — production-ready.',
+    desc: 'Custom AI products on top of GPT, Claude, and open models. Chatbots, generators, agents, RAG pipelines. I ship them with rate limits, fallbacks, and prompt logging so they hold up on day two.',
     features: ['LLM integration', 'RAG / Vector DB', 'Custom agents'],
   },
   {
     icon: Workflow,
     title: 'Automation',
     code: 'SVC_04',
-    desc: 'Replace 4 hours of manual work with a 4-second workflow. N8N, Zapier, or custom scripts wired to your stack and your CRM.',
+    desc: 'I turn four hours of manual work into a four-second workflow. I build them on N8N, Zapier, or custom Node scripts and sync them to your CRM, your inbox, and the AI you already pay for.',
     features: ['N8N / Zapier', 'API plumbing', 'AI-driven flows'],
   },
 ];
@@ -50,7 +50,7 @@ export default function Services() {
           index="01"
           eyebrow="Services"
           title={<>What I build<span className="text-matrix">.</span></>}
-          sub="Four disciplines. One operator. Every project ships from the same brain — so the design, code, and AI all speak the same language."
+          sub="Four disciplines, one operator. I write the design, the code, and the AI integration myself, so nothing gets lost in handoffs."
         />
 
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">

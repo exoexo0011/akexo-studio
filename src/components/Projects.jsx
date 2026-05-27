@@ -7,7 +7,7 @@ const projects = [
     code: 'PRJ_001',
     title: 'AI Content Creator',
     blurb:
-      'A 4-agent pipeline that scrapes viral content, scores it, writes a reel script, and generates 5 hooks — all in one run.',
+      'A four-agent pipeline. It scrapes viral posts, scores them on engagement, drafts the reel script, and gives you five hook options. One command, sixty seconds.',
     tags: ['Claude', 'React', 'N8N', 'Tailwind'],
     href: 'https://github.com/exoexo0011',
     status: 'Live',
@@ -18,7 +18,7 @@ const projects = [
     code: 'PRJ_002',
     title: 'Founder Site System',
     blurb:
-      'High-conversion landing pages for AI startups. Edge-deployed Next.js, animated, A/B-ready out of the box.',
+      'Landing pages for AI startups. Next.js on the Vercel edge, animated with Framer Motion, A/B tests pre-wired. I deliver them with analytics and a live preview link in 72 hours.',
     tags: ['Next.js', 'Framer Motion', 'Vercel'],
     href: '#contact',
     status: 'Live',
@@ -28,7 +28,7 @@ const projects = [
     code: 'PRJ_003',
     title: 'AutoFlow Agent',
     blurb:
-      'AI ops agent that watches Slack + Gmail, drafts responses, files tickets, and reports a daily summary.',
+      'An ops agent that reads your Slack and Gmail, drafts replies, opens Linear tickets, and emails a summary every morning at 8.',
     tags: ['OpenAI', 'Node', 'Postgres'],
     href: '#contact',
     status: 'Beta',
@@ -38,7 +38,7 @@ const projects = [
     code: 'PRJ_004',
     title: 'Client Portal App',
     blurb:
-      'React Native app with Stripe billing, push notifications, and a chat with the project bot. Ships in 14 days.',
+      'A React Native app for client onboarding. Stripe billing, push notifications, and a chat that talks to your project bot. I push it to TestFlight in 14 days.',
     tags: ['React Native', 'Expo', 'Stripe'],
     href: '#contact',
     status: 'Soon',
@@ -68,7 +68,7 @@ export default function Projects() {
               Things I've <span className="text-matrix">shipped</span>.
             </>
           }
-          sub="A short list. Each project was built end-to-end — design, code, AI, deploy. Most go live in under 3 weeks."
+          sub="A short list. I built each one end-to-end: design, code, AI, deploy. Most went live in under three weeks."
         />
 
         <div className="grid gap-5 md:grid-cols-2">
