@@ -136,11 +136,23 @@ export default function Footer() {
               src="/logo-icon.png"
               alt="AkExo Studio"
               style={{
-                height: '40px',
-                width: 'auto',
+                width: '180px',
+                height: 'auto',
                 objectFit: 'contain',
+                /* Layered drop-shadow paints a soft violet halo around
+                   the transparent edges of the icon — inner pass at 20px
+                   80% alpha for the bright core, outer pass at 40px 40%
+                   alpha for atmospheric falloff. drop-shadow respects
+                   the alpha channel of the PNG, so the halo follows the
+                   actual silhouette instead of forming a rectangle. */
+                filter:
+                  'drop-shadow(0 0 20px rgba(139,92,246,0.8)) drop-shadow(0 0 40px rgba(139,92,246,0.4))',
               }}
-              className="block group-hover:opacity-90 transition-opacity"
+              /* animate-logo_pulse loops a 5% scale breath every 3s. Only
+                 the transform channel is touched, so the inline filter
+                 stays put; group-hover:opacity-90 lives on the opacity
+                 channel and is also non-conflicting. */
+              className="block animate-logo_pulse group-hover:opacity-90 transition-opacity"
             />
           </a>
 

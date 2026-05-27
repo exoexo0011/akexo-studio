@@ -91,6 +91,13 @@ export default {
               '0 0 24px rgba(139, 92, 246, 0.65), 0 0 48px rgba(139, 92, 246, 0.30)',
           },
         },
+        // Logo pulse — a barely-perceptible 5% scale breath on a 3s loop,
+        // used by the footer brand icon. Long enough that the eye reads
+        // it as "alive" rather than "animating".
+        logo_pulse: {
+          '0%, 100%': { transform: 'scale(1)' },
+          '50%': { transform: 'scale(1.05)' },
+        },
       },
       animation: {
         blink: 'blink 1s steps(2, start) infinite',
@@ -101,6 +108,7 @@ export default {
         gradient_shift: 'gradient_shift 8s ease-in-out infinite',
         pulse_glow: 'pulse_glow 2s ease-in-out infinite',
         halo_pulse: 'halo_pulse 2.4s ease-in-out infinite',
+        logo_pulse: 'logo_pulse 3s ease-in-out infinite',
       },
     },
   },
