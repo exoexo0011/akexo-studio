@@ -48,7 +48,7 @@ export default function Navbar() {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
             className="block group-hover:opacity-90 transition-opacity"
-            style={{ height: '48px', width: 'auto', objectFit: 'contain' }}
+            style={{ height: '72px', width: 'auto', objectFit: 'contain' }}
           />
         </a>
 
