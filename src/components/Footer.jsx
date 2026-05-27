@@ -1,4 +1,28 @@
+import { motion } from 'framer-motion';
 import { ArrowUp } from 'lucide-react';
+
+/* The wordmark is split into individual letters so each glyph can stagger
+   into view independently. Mixed-case "AkExo" exactly as specified — no
+   `text-transform` is applied, so the displayed casing matches the source
+   character-for-character. */
+const MASTHEAD_LETTERS = ['A', 'k', 'E', 'x', 'o'];
+
+/* whileInView entrance animation. `custom={i}` feeds the index in as the
+   variant argument so each letter computes its own delay. The dot uses
+   the same variants but at index === MASTHEAD_LETTERS.length so it lands
+   one stagger beat after the final letter. */
+const letterVariants = {
+  hidden: { opacity: 0, y: 40 },
+  visible: (i) => ({
+    opacity: 1,
+    y: 0,
+    transition: {
+      delay: i * 0.08,
+      duration: 0.6,
+      ease: [0.22, 1, 0.36, 1],
+    },
+  }),
+};
 
 export default function Footer() {
   /* Smooth-scroll the page back to the very top. Using window.scrollTo is
@@ -14,27 +38,70 @@ export default function Footer() {
   return (
     <footer className="relative border-t border-white/[0.08]">
       <div className="mx-auto max-w-7xl px-5 py-16 sm:px-8 lg:px-12">
-        {/* Big sans wordmark — lowercase, with a glowing pulsing violet dot
-            in place of a period. The dot is a real DOM element (not a
-            character) so we can paint it with a hard violet fill, a layered
-            box-shadow glow, and a slow scale pulse. items-baseline parks it
-            at the baseline of "akexo" so it reads like punctuation. */}
+        {/* === Masthead row ===
+            Big "AkExo" wordmark on the left, "END / FIN" badge on the right
+            (sm+ only). The h2 is treated as a single block of inline-block
+            letters rather than a flex row so the glyphs flow as text with
+            no inter-letter gap; the violet pulse dot trails the last letter
+            with a fixed margin and a baseline alignment so it reads like
+            punctuation. */}
         <div className="flex items-end justify-between gap-6 mb-10">
-          <h2 className="display text-bone text-[18vw] sm:text-[14vw] md:text-[10rem] lg:text-[12rem] leading-[0.85] flex items-baseline gap-2 sm:gap-3">
-            <span>akexo</span>
-            <span
+          <motion.h2
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.4 }}
+            aria-label="AkExo Studio"
+            className="leading-[0.9] text-[5rem] md:text-[10rem]"
+            style={{
+              /* Clash Display is the primary face. Syne and Bricolage
+                 Grotesque follow as graceful fallbacks while Fontshare
+                 finishes loading (or for any environment where it can't
+                 be reached). */
+              fontFamily:
+                '"Clash Display", "Syne", "Bricolage Grotesque", system-ui, sans-serif',
+              fontWeight: 700,
+              letterSpacing: '-0.04em',
+              color: '#ffffff',
+            }}
+          >
+            {MASTHEAD_LETTERS.map((char, i) => (
+              <motion.span
+                key={`${char}-${i}`}
+                custom={i}
+                variants={letterVariants}
+                aria-hidden="true"
+                className="inline-block"
+              >
+                {char}
+              </motion.span>
+            ))}
+
+            {/* Pulsing violet dot — wrapped in a motion.span so it can
+                share the entrance stagger (custom = letters.length, so it
+                arrives one beat after "o"). The visible disc lives on the
+                INNER element so the perpetual `animate-pulse_glow` scale
+                CSS animation doesn't fight the framer-motion transform on
+                the outer wrapper. */}
+            <motion.span
+              custom={MASTHEAD_LETTERS.length}
+              variants={letterVariants}
               aria-hidden="true"
-              className="inline-block shrink-0 animate-pulse_glow"
-              style={{
-                width: 18,
-                height: 18,
-                borderRadius: '50%',
-                background: '#8B5CF6',
-                boxShadow:
-                  '0 0 12px #8B5CF6, 0 0 24px rgba(139, 92, 246, 0.5)',
-              }}
-            />
-          </h2>
+              className="inline-block align-baseline ml-4 sm:ml-5"
+            >
+              <span
+                className="block animate-pulse_glow"
+                style={{
+                  width: 18,
+                  height: 18,
+                  borderRadius: '50%',
+                  background: '#8B5CF6',
+                  boxShadow:
+                    '0 0 12px #8B5CF6, 0 0 24px rgba(139, 92, 246, 0.5)',
+                }}
+              />
+            </motion.span>
+          </motion.h2>
+
           <span className="hidden sm:flex font-mono text-[10px] uppercase tracking-[0.28em] text-bone/45 pb-4">
             END / FIN
           </span>
