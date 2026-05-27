@@ -187,25 +187,6 @@ export default function Hero() {
         }}
       />
 
-      {/* Soft brand tint blobs over the video for atmosphere parity with the
-          rest of the site (decorative only, no DOM weight on mobile). */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute -top-[10vw] -right-[10vw] h-[50vw] w-[50vw] rounded-full blur-[120px] opacity-50"
-        style={{
-          background:
-            'radial-gradient(circle, rgba(139, 92, 246, 0.5) 0%, transparent 65%)',
-        }}
-      />
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute -bottom-[15vw] -left-[10vw] h-[55vw] w-[55vw] rounded-full blur-[140px] opacity-40"
-        style={{
-          background:
-            'radial-gradient(circle, rgba(236, 72, 153, 0.45) 0%, transparent 65%)',
-        }}
-      />
-
       {/* === MASTHEAD ROW === */}
       <motion.div
         initial={{ opacity: 0, y: -10 }}
@@ -241,10 +222,13 @@ export default function Hero() {
           animate="visible"
           className="w-full"
         >
+          {/* Desktop sizes (md/lg/xl) tuned so the longest typed phrase
+              ("automations") fits inside the max-w-7xl container with
+              breathing room. Mobile sizes (default + sm:) are untouched. */}
           <motion.h1
             custom={0}
             variants={fadeUp}
-            className="display text-bone text-[14vw] sm:text-[12vw] md:text-[10rem] lg:text-[12rem] xl:text-[13.5rem]"
+            className="display text-bone text-[14vw] sm:text-[12vw] md:text-[6rem] lg:text-[7.5rem] xl:text-[9rem]"
           >
             <span className="block">I build</span>
             <span className="block whitespace-nowrap overflow-visible">
