@@ -1,0 +1,115 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+html,
+body {
+  background: #030303;
+  color: #f5f5f0;
+  font-family: 'Bricolage Grotesque', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background: #00ff41;
+  color: #030303;
+}
+
+/* custom thin scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #030303;
+}
+::-webkit-scrollbar-thumb {
+  background: #0a3d18;
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #00ff41;
+}
+
+@layer components {
+  .glass {
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.04) 0%,
+      rgba(255, 255, 255, 0.01) 100%
+    );
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+  }
+  .glass-matrix {
+    background: linear-gradient(
+      135deg,
+      rgba(0, 255, 65, 0.08) 0%,
+      rgba(0, 255, 65, 0.02) 100%
+    );
+    border: 1px solid rgba(0, 255, 65, 0.35);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+  }
+  .eyebrow {
+    @apply font-mono text-[11px] uppercase tracking-[0.3em] text-matrix;
+  }
+  .display {
+    @apply font-display uppercase leading-[0.85] tracking-tightest;
+  }
+  .btn-primary {
+    @apply inline-flex items-center gap-2 bg-matrix text-ink px-6 py-3 font-mono text-sm uppercase tracking-[0.18em] font-bold
+      hover:bg-bone transition-colors duration-200 border border-matrix;
+  }
+  .btn-ghost {
+    @apply inline-flex items-center gap-2 text-bone/90 px-6 py-3 font-mono text-sm uppercase tracking-[0.18em] font-bold
+      hover:text-matrix transition-colors duration-200 border border-bone/15 hover:border-matrix/60;
+  }
+  .section-pad {
+    @apply px-5 sm:px-8 lg:px-16 py-24 md:py-32;
+  }
+}
+
+/* matrix-style underline that sweeps in */
+.sweep::after {
+  content: '';
+  display: block;
+  width: 0;
+  height: 1px;
+  background: #00ff41;
+  transition: width 0.4s ease;
+}
+.sweep:hover::after {
+  width: 100%;
+}
+
+/* subtle scanline texture overlay */
+.scanlines {
+  background-image: repeating-linear-gradient(
+    0deg,
+    rgba(255, 255, 255, 0.015) 0px,
+    rgba(255, 255, 255, 0.015) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+}
+
+/* perspective grid floor */
+.grid-floor {
+  background-image:
+    linear-gradient(rgba(0, 255, 65, 0.18) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 255, 65, 0.18) 1px, transparent 1px);
+  background-size: 60px 60px;
+  mask-image: linear-gradient(to bottom, transparent 0%, black 30%, black 70%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 30%, black 70%, transparent 100%);
+}
