@@ -104,17 +104,18 @@ function useLiveVisitorCount() {
   return count;
 }
 
-/* Brand-coral red used by the live-visitors pill. Defined once so the dot,
-   the dot's halo, and the count text all stay in lockstep. */
+/* Brand-coral red used by the live-visitors indicator. Defined once so the
+   dot, its halo, and the "LIVE" word all stay in lockstep. */
 const VISITOR_ACCENT = '#FF6B47';
 
 /**
  * LiveVisitors
- * Small pill rendered at the top of the hero, just below the fixed navbar.
- * Coral/red pulsing dot, coral/red number that fade-swaps when the count
- * updates, and a muted-white descriptor in editorial mono caps. The dot
- * uses Tailwind's built-in `animate-ping` for the radiating ring plus a
- * static disc with a layered coral box-shadow halo.
+ * Plain-text live indicator rendered just below the navbar, left-aligned.
+ * Format: [pulsing coral dot] LIVE · [count] VIEWING NOW
+ * No pill, no border, no background — just typography on the dark hero.
+ * The dot uses Tailwind's `animate-ping` for the radiating ring layered
+ * over a static disc with a coral box-shadow halo. The count fade-swaps
+ * via AnimatePresence on each tick.
  */
 function LiveVisitors() {
   const count = useLiveVisitorCount();
@@ -124,11 +125,13 @@ function LiveVisitors() {
       initial={{ opacity: 0, y: -8 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, delay: 0.35, ease: [0.22, 1, 0.36, 1] }}
-      className="inline-flex items-center gap-2.5 rounded-full border border-white/[0.08] bg-white/[0.04] px-3.5 py-1.5 backdrop-blur-md"
+      className="inline-flex items-center gap-2 font-mono uppercase"
+      style={{ fontSize: '11px', letterSpacing: '0.2em' }}
       role="status"
       aria-live="polite"
       aria-label={`${count} people viewing now`}
     >
+      {/* Pulsing coral dot — animate-ping ring + static disc with halo. */}
       <span aria-hidden="true" className="relative flex h-2 w-2">
         <span
           className="absolute inline-flex h-full w-full animate-ping rounded-full opacity-75"
@@ -144,11 +147,17 @@ function LiveVisitors() {
         />
       </span>
 
-      <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-bone/70">
-        {/* AnimatePresence with mode="wait" + key={count} performs the
-            fade-out / fade-in swap on every count change. tabular-nums
-            keeps the number from jittering as glyph widths change between
-            9-and-below and 10-and-above. */}
+      {/* "LIVE" in coral. */}
+      <span style={{ color: VISITOR_ACCENT }}>Live</span>
+
+      {/* Middle-dot divider in muted white. */}
+      <span aria-hidden="true" className="text-bone/55">
+        ·
+      </span>
+
+      {/* Count + descriptor in muted white. tabular-nums keeps the digits
+          from jittering as glyph widths change between 9 and 10. */}
+      <span className="text-bone/70">
         <AnimatePresence mode="wait" initial={false}>
           <motion.span
             key={count}
@@ -157,12 +166,11 @@ function LiveVisitors() {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.25, ease: 'easeOut' }}
             className="inline-block tabular-nums"
-            style={{ color: VISITOR_ACCENT }}
           >
             {count}
           </motion.span>
         </AnimatePresence>{' '}
-        people viewing now
+        viewing now
       </span>
     </motion.div>
   );
@@ -217,10 +225,11 @@ export default function Hero() {
         }}
       />
 
-      {/* === LIVE VISITORS PILL (z-index: 2) ===
-          Sits just below the fixed navbar. pt-24 / md:pt-28 clears the
-          navbar bar (~68px on mobile / ~104px on desktop) and lets the
-          headline below center itself in the remaining space. */}
+      {/* === LIVE VISITORS INDICATOR (z-index: 2) ===
+          Plain-text live indicator just below the fixed navbar, left-aligned.
+          pt-24 / md:pt-28 clears the navbar bar (~68px on mobile / ~104px
+          on desktop) and lets the headline below center itself in the
+          remaining space. */}
       <div
         className="relative mx-auto w-full max-w-7xl px-5 sm:px-8 lg:px-12 pt-24 md:pt-28"
         style={{ zIndex: 2 }}
