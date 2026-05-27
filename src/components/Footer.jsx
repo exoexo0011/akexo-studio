@@ -2,10 +2,26 @@ export default function Footer() {
   return (
     <footer className="relative border-t border-white/[0.08]">
       <div className="mx-auto max-w-7xl px-5 py-16 sm:px-8 lg:px-12">
-        {/* Big sans wordmark — lowercase, with a gradient dot */}
+        {/* Big sans wordmark — lowercase, with a glowing pulsing violet dot
+            in place of a period. The dot is a real DOM element (not a
+            character) so we can paint it with a hard violet fill, a layered
+            box-shadow glow, and a slow scale pulse. items-baseline parks it
+            at the baseline of "akexo" so it reads like punctuation. */}
         <div className="flex items-end justify-between gap-6 mb-10">
-          <h2 className="display text-bone text-[18vw] sm:text-[14vw] md:text-[10rem] lg:text-[12rem] leading-[0.85]">
-            akexo<span className="display-italic">.</span>
+          <h2 className="display text-bone text-[18vw] sm:text-[14vw] md:text-[10rem] lg:text-[12rem] leading-[0.85] flex items-baseline gap-2 sm:gap-3">
+            <span>akexo</span>
+            <span
+              aria-hidden="true"
+              className="inline-block shrink-0 animate-pulse_glow"
+              style={{
+                width: 18,
+                height: 18,
+                borderRadius: '50%',
+                background: '#8B5CF6',
+                boxShadow:
+                  '0 0 12px #8B5CF6, 0 0 24px rgba(139, 92, 246, 0.5)',
+              }}
+            />
           </h2>
           <span className="hidden sm:flex font-mono text-[10px] uppercase tracking-[0.28em] text-bone/45 pb-4">
             END / FIN
@@ -18,15 +34,11 @@ export default function Footer() {
           <div className="flex items-center gap-4">
             <a href="#top" className="flex items-center gap-3 group">
               <img
-                src="/logo-icon.png"
-                alt=""
-                aria-hidden="true"
-                style={{ height: '40px', width: 'auto', objectFit: 'contain' }}
+                src="/logo-full.png"
+                alt="AkExo Studio"
+                style={{ height: '48px', width: 'auto', objectFit: 'contain' }}
                 className="block group-hover:opacity-90 transition-opacity"
               />
-              <span className="font-mono text-[11px] uppercase tracking-[0.28em] text-bone group-hover:text-bone transition-colors">
-                AkExo Studio
-              </span>
             </a>
             <span className="hidden sm:flex items-center gap-2 pl-4 border-l border-white/[0.08]">
               <span className="relative flex h-2 w-2">

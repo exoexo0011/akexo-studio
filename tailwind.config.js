@@ -70,6 +70,13 @@ export default {
           '0%, 100%': { backgroundPosition: '0% 50%' },
           '50%': { backgroundPosition: '100% 50%' },
         },
+        // Slow scale pulse used by the footer brand dot. Keeps the violet
+        // glow alive without ever quite catching the eye — peaks at 1.2x
+        // halfway through the 2s loop, returns to 1.0 at the boundaries.
+        pulse_glow: {
+          '0%, 100%': { transform: 'scale(1)' },
+          '50%': { transform: 'scale(1.2)' },
+        },
       },
       animation: {
         blink: 'blink 1s steps(2, start) infinite',
@@ -78,6 +85,7 @@ export default {
         drift_slow: 'drift_slow 30s ease-in-out infinite',
         marquee: 'marquee 50s linear infinite',
         gradient_shift: 'gradient_shift 8s ease-in-out infinite',
+        pulse_glow: 'pulse_glow 2s ease-in-out infinite',
       },
     },
   },
