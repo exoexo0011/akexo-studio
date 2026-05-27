@@ -61,7 +61,7 @@ export default function Projects() {
   const rest = projects.slice(1);
 
   return (
-    <section id="projects" className="relative section-pad">
+    <section id="work" className="relative section-pad">
       <div className="mx-auto max-w-7xl">
         <SectionHeader
           index="02"

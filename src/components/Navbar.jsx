@@ -4,7 +4,7 @@ import { Menu, X, ArrowRight } from 'lucide-react';
 
 const links = [
   { href: '#services', label: 'Services' },
-  { href: '#projects', label: 'Work' },
+  { href: '#work', label: 'Work' },
   { href: '#process', label: 'Process' },
   { href: '#pricing', label: 'Pricing' },
   { href: '#contact', label: 'Contact' },
@@ -128,6 +128,28 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
+  /* Body scroll lock while the full-screen mobile menu is open. Restoring
+     the previous overflow value (rather than blanking it) keeps any other
+     code that briefly sets it from being clobbered. */
+  useEffect(() => {
+    if (!open) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = prev;
+    };
+  }, [open]);
+
+  /* Close the menu on Escape — small touch but expected on any overlay. */
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e) => {
+      if (e.key === 'Escape') setOpen(false);
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [open]);
+
   /**
    * handleNavClick
    * Universal smooth-scroll handler used by every link in the navbar (desktop
@@ -228,9 +250,11 @@ export default function Navbar() {
           <button
             onClick={() => setOpen((s) => !s)}
             className="lg:hidden text-bone p-2 -mr-2 rounded-full hover:bg-white/[0.06] transition-colors"
-            aria-label="Toggle menu"
+            aria-label="Open menu"
+            aria-expanded={open}
+            aria-controls="mobile-menu"
           >
-            {open ? <X size={22} /> : <Menu size={22} />}
+            <Menu size={22} />
           </button>
         </div>
       </div>
@@ -238,31 +262,100 @@ export default function Navbar() {
       <AnimatePresence>
         {open && (
           <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: 'auto', opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-            className="lg:hidden overflow-hidden border-t border-white/[0.06] bg-[#050507]/90 backdrop-blur-xl"
+            id="mobile-menu"
+            key="mobile-overlay"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Site navigation"
+            initial={{ x: '100%' }}
+            animate={{ x: 0 }}
+            exit={{ x: '100%' }}
+            transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+            className="fixed inset-0 z-[100] lg:hidden"
+            style={{
+              backgroundColor: 'rgba(0, 0, 0, 0.95)',
+              backdropFilter: 'blur(24px) saturate(140%)',
+              WebkitBackdropFilter: 'blur(24px) saturate(140%)',
+            }}
           >
-            <div className="flex flex-col px-5 py-6 gap-1">
-              {links.map((l) => (
-                <a
-                  key={l.href}
-                  href={l.href}
-                  onClick={(e) => handleNavClick(e, l.href)}
-                  className="px-3 py-3 font-body text-base text-bone/85 hover:text-bone hover:bg-white/[0.04] rounded-xl transition-colors"
-                >
-                  {l.label}
-                </a>
-              ))}
-              <a
+            {/* Subtle violet/pink atmosphere accent — soft radial blob in
+                the upper-right that catches the eye without competing with
+                the link list. Pure decoration, never receives pointer events. */}
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute -right-32 -top-32 h-[460px] w-[460px] rounded-full opacity-90"
+              style={{
+                background:
+                  'radial-gradient(closest-side, rgba(139,92,246,0.40) 0%, rgba(236,72,153,0.18) 45%, transparent 75%)',
+                filter: 'blur(8px)',
+              }}
+            />
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute -bottom-40 -left-32 h-[380px] w-[380px] rounded-full opacity-70"
+              style={{
+                background:
+                  'radial-gradient(closest-side, rgba(99,102,241,0.32) 0%, transparent 70%)',
+                filter: 'blur(8px)',
+              }}
+            />
+
+            {/* Close button — large enough for thumb, top-right anchor */}
+            <button
+              onClick={() => setOpen(false)}
+              aria-label="Close menu"
+              className="absolute right-5 top-5 z-10 inline-flex h-12 w-12 items-center justify-center rounded-full border border-white/[0.08] bg-white/[0.06] text-bone backdrop-blur transition-all duration-300 hover:border-violet-400/40 hover:bg-white/[0.12] hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-400/70"
+            >
+              <X size={26} strokeWidth={1.75} />
+            </button>
+
+            {/* Content stack — links pinned to the top with generous breathing
+                room, CTA pinned to the bottom. flex-1 spacer in between
+                pushes the CTA down regardless of how many links exist. */}
+            <div className="relative flex h-full flex-col px-6 pt-24 pb-10 sm:px-10">
+              <nav className="flex flex-col">
+                {links.map((l, i) => (
+                  <motion.a
+                    key={l.href}
+                    href={l.href}
+                    onClick={(e) => handleNavClick(e, l.href)}
+                    initial={{ opacity: 0, x: 32 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{
+                      delay: 0.18 + i * 0.06,
+                      duration: 0.42,
+                      ease: [0.22, 1, 0.36, 1],
+                    }}
+                    className="group flex items-center justify-between border-b border-white/[0.10] py-5 text-bone transition-colors duration-300 hover:text-violet-300"
+                  >
+                    <span
+                      className="display font-medium"
+                      style={{ fontSize: 32, lineHeight: 1 }}
+                    >
+                      {l.label}
+                    </span>
+                    <ArrowRight
+                      size={22}
+                      className="text-bone/40 transition-all duration-300 ease-out group-hover:translate-x-1 group-hover:text-violet-300"
+                    />
+                  </motion.a>
+                ))}
+              </nav>
+
+              <div className="flex-1" />
+
+              {/* Primary CTA — full-width gradient pill at the bottom edge */}
+              <motion.a
                 href="#contact"
                 onClick={(e) => handleNavClick(e, '#contact')}
-                className="btn-primary mt-4 justify-center"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.55, duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+                className="btn-primary w-full justify-center !py-4 !text-[15px]"
               >
                 Book the call
-                <ArrowRight size={16} />
-              </a>
+                <ArrowRight size={18} />
+              </motion.a>
             </div>
           </motion.div>
         )}

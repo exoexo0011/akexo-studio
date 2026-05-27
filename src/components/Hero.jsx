@@ -214,7 +214,7 @@ export default function Hero() {
                     className="transition-transform group-hover:translate-x-1"
                   />
                 </a>
-                <a href="#projects" className="btn-ghost">
+                <a href="#work" className="btn-ghost">
                   See the work
                 </a>
               </div>
@@ -242,7 +242,7 @@ export default function Hero() {
           <a href="#services" className="hover:text-bone transition-colors sweep">
             <span className="text-bone/35">01</span> Services
           </a>
-          <a href="#projects" className="hover:text-bone transition-colors sweep">
+          <a href="#work" className="hover:text-bone transition-colors sweep">
             <span className="text-bone/35">02</span> Selected Work
           </a>
           <a href="#process" className="hover:text-bone transition-colors sweep">
