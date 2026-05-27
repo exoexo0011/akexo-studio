@@ -48,13 +48,6 @@ const fadeUp = {
   }),
 };
 
-const issueNumber = String(
-  Math.floor((Date.now() - new Date('2024-01-01').getTime()) / (1000 * 60 * 60 * 24 * 7)),
-).padStart(3, '0');
-const issueMonth = new Date()
-  .toLocaleString('en-US', { month: 'short', year: 'numeric' })
-  .toUpperCase();
-
 /**
  * usePrefersReducedMotion
  * Tracks the user's OS-level "reduce motion" preference. When true, we skip
@@ -122,35 +115,6 @@ export default function Hero() {
           zIndex: 1,
         }}
       />
-
-      {/* === MASTHEAD ROW (z-index: 2) === */}
-      <motion.div
-        initial={{ opacity: 0, y: -10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.4 }}
-        className="relative mx-auto w-full max-w-7xl px-5 sm:px-8 lg:px-12 pt-28 md:pt-32"
-        style={{ zIndex: 2 }}
-      >
-        <div className="flex flex-wrap items-baseline justify-between gap-3 font-mono text-[10px] uppercase tracking-[0.28em] text-bone/55">
-          <span>
-            <span className="text-bone/35">Issue No.</span>{' '}
-            <span className="text-bone">{issueNumber}</span>{' '}
-            <span className="text-bone/35">/</span>{' '}
-            <span className="text-bone">{issueMonth}</span>
-          </span>
-          <span className="hidden sm:inline">Solo AI Dev Studio</span>
-          <span className="flex items-center gap-2">
-            <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-coral opacity-70" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-coral" />
-            </span>
-            <span className="text-coral">Live</span>
-            <span className="text-bone/35">·</span>
-            <span>Taking 2 clients</span>
-          </span>
-        </div>
-        <div className="rule-line-accent mt-4" />
-      </motion.div>
 
       {/* === DISPLAY HEADLINE (z-index: 2) === */}
       <div
