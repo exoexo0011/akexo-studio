@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { ArrowUpRight, Github } from 'lucide-react';
+import { ArrowUpRight } from 'lucide-react';
 import SectionHeader from './SectionHeader.jsx';
 
 /* === Project registry ===
@@ -7,7 +7,7 @@ import SectionHeader from './SectionHeader.jsx';
    the visual order on screen (top-left → top-right on md+, top → bottom on
    mobile). `code` is the editorial PRJ_NNN tag in the corner — kept zero-
    padded for the magazine feel; bump it when adding a third entry.
-   `live` and `github` are mandatory and always open in a new tab. */
+   `live` is mandatory and always opens in a new tab. */
 const projects = [
   {
     code: 'PRJ_001',
@@ -16,7 +16,6 @@ const projects = [
       '4-agent AI pipeline that generates viral scripts, hooks, and a full week of content from one topic.',
     tags: ['React', 'Vite', 'NVIDIA NIM', 'Llama 4'],
     live: 'https://ai-content-creator-jade.vercel.app',
-    github: 'https://github.com/exoexo0011/ai-content-creator',
     status: 'Live',
     metric: '4 agents',
   },
@@ -27,7 +26,6 @@ const projects = [
       'Personal AI dev studio website with scroll video hero, live visitor counter, and premium dark UI.',
     tags: ['React', 'Vite', 'Tailwind', 'Framer Motion'],
     live: 'https://akexo-studio.vercel.app',
-    github: 'https://github.com/exoexo0011/akexo-studio',
     status: 'Live',
     metric: 'v1 — Live',
   },
@@ -78,37 +76,22 @@ export default function Projects() {
               className="glass-matrix group relative flex flex-col gap-5 overflow-hidden p-7 md:p-9"
             >
               {/* === Header row ===
-                  Left cluster: editorial code tag + thin divider + status
-                  ping. The status uses the same coral pulse pattern as
-                  every other "Live" indicator on the site so it reads
-                  consistently across sections.
-                  Right cluster: GitHub icon button. Sits in the corner
-                  like a secondary action; the primary CTA lives at the
-                  bottom of the card. */}
-              <div className="flex items-start justify-between gap-3">
-                <div className="flex items-center gap-3">
-                  <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-matrix">
-                    {p.code}
+                  Editorial code tag + thin divider + status ping. The
+                  status uses the same coral pulse pattern as every other
+                  "Live" indicator on the site so it reads consistently
+                  across sections. */}
+              <div className="flex items-center gap-3">
+                <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-matrix">
+                  {p.code}
+                </span>
+                <span className="h-px w-6 bg-matrix/40" />
+                <span className="font-mono text-[10px] uppercase tracking-[0.25em] flex items-center gap-1.5 text-coral">
+                  <span className="relative flex h-1.5 w-1.5">
+                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-coral opacity-70" />
+                    <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-coral" />
                   </span>
-                  <span className="h-px w-6 bg-matrix/40" />
-                  <span className="font-mono text-[10px] uppercase tracking-[0.25em] flex items-center gap-1.5 text-coral">
-                    <span className="relative flex h-1.5 w-1.5">
-                      <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-coral opacity-70" />
-                      <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-coral" />
-                    </span>
-                    {p.status}
-                  </span>
-                </div>
-
-                <a
-                  href={p.github}
-                  target="_blank"
-                  rel="noreferrer noopener"
-                  aria-label={`${p.title} — GitHub repository`}
-                  className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/[0.10] bg-white/[0.04] text-bone/75 transition-all duration-300 ease-out hover:scale-105 hover:border-matrix/50 hover:bg-white/[0.10] hover:text-bone focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-400/70"
-                >
-                  <Github size={16} strokeWidth={2} />
-                </a>
+                  {p.status}
+                </span>
               </div>
 
               {/* === Title & blurb ===
