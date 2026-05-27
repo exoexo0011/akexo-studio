@@ -6,7 +6,7 @@ const tiers = [
   {
     name: 'Starter',
     code: 'TIER_01',
-    price: '$1.5k',
+    price: '₹1,999',
     cadence: 'one-time',
     pitch: 'For founders testing an idea before they raise.',
     features: [
@@ -21,7 +21,7 @@ const tiers = [
   {
     name: 'Pro',
     code: 'TIER_02',
-    price: '$4.5k',
+    price: '₹4,999',
     cadence: 'one-time',
     pitch: 'Most clients pick this. A custom build, designed and shipped from scratch.',
     features: [
@@ -38,7 +38,7 @@ const tiers = [
   {
     name: 'Agency',
     code: 'TIER_03',
-    price: '$3k',
+    price: '₹9,999',
     cadence: 'per month',
     pitch: 'I become your in-house dev for a month at a time.',
     features: [
@@ -136,7 +136,7 @@ export default function Pricing() {
                   </span>
                 )}
                 <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-bone/40">
-                  USD / {t.cadence}
+                  INR / {t.cadence}
                 </span>
               </div>
 
