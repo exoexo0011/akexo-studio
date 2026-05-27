@@ -88,11 +88,14 @@ export default function Footer() {
               aria-hidden="true"
               className="inline-block align-baseline ml-4 sm:ml-5"
             >
+              {/* Size is responsive: 10px on mobile to match the 1.8rem
+                  masthead, 18px from md+ where the masthead returns to
+                  10rem. Width/height live on the class so the breakpoint
+                  switch is purely CSS; only the non-sizing visual props
+                  (radius, fill, glow) stay inline. */}
               <span
-                className="block animate-pulse_glow"
+                className="block w-[10px] h-[10px] md:w-[18px] md:h-[18px] animate-pulse_glow"
                 style={{
-                  width: 18,
-                  height: 18,
                   borderRadius: '50%',
                   background: '#8B5CF6',
                   boxShadow:
