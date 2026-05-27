@@ -51,7 +51,7 @@ export default function Footer() {
             whileInView="visible"
             viewport={{ once: true, amount: 0.4 }}
             aria-label="AkExo Studio"
-            className="leading-[0.9] text-[4rem] md:text-[10rem]"
+            className="leading-[0.9] text-[1.8rem] md:text-[10rem]"
             style={{
               /* Clash Display is the primary face. Syne and Bricolage
                  Grotesque follow as graceful fallbacks while Fontshare
