@@ -1,7 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight, ArrowDown } from 'lucide-react';
-import ParticleGrid from './ParticleGrid.jsx';
 
 const PHRASES = ['AI tools', 'web apps', 'automations', 'mobile apps'];
 
@@ -56,15 +55,143 @@ const issueMonth = new Date()
   .toLocaleString('en-US', { month: 'short', year: 'numeric' })
   .toUpperCase();
 
+/**
+ * useScrollControlledVideo
+ * Drives `video.currentTime` from the user's scroll progress through the hero
+ * section. When `disabled` is true (e.g. prefers-reduced-motion), the hook
+ * leaves the video parked on its first frame.
+ */
+function useScrollControlledVideo(videoRef, sectionRef, disabled) {
+  useEffect(() => {
+    const video = videoRef.current;
+    const section = sectionRef.current;
+    if (!video || !section) return;
+
+    // Force the first frame to render so the video never shows as a black
+    // rectangle while metadata is still loading. Tiny offset (not 0) because
+    // some browsers don't paint the very first frame at exactly t=0.
+    const paintFirstFrame = () => {
+      try {
+        if (video.currentTime < 0.05) video.currentTime = 0.05;
+      } catch {
+        /* seek not yet allowed — ignore */
+      }
+    };
+    if (video.readyState >= 2) paintFirstFrame();
+    else video.addEventListener('loadeddata', paintFirstFrame, { once: true });
+
+    if (disabled) {
+      return () => {
+        video.removeEventListener('loadeddata', paintFirstFrame);
+      };
+    }
+
+    let rafId = 0;
+    let duration = 0;
+
+    const onMeta = () => {
+      duration = Number.isFinite(video.duration) ? video.duration : 0;
+      update();
+    };
+    if (video.readyState >= 1 && Number.isFinite(video.duration)) {
+      duration = video.duration;
+    } else {
+      video.addEventListener('loadedmetadata', onMeta);
+    }
+
+    const update = () => {
+      rafId = 0;
+      if (!duration) return;
+      const rect = section.getBoundingClientRect();
+      // Progress = how far the section's top has moved past the viewport top,
+      // clamped to [0, sectionHeight]. So the video plays forward as the user
+      // scrolls *out* of the hero.
+      const scrolled = Math.min(Math.max(-rect.top, 0), rect.height);
+      const progress = rect.height > 0 ? scrolled / rect.height : 0;
+      // Leave a hair of headroom at the end so we don't seek past duration.
+      const target = Math.min(progress * duration, duration - 0.01);
+      try {
+        video.currentTime = target;
+      } catch {
+        /* swallow seek errors during decode */
+      }
+    };
+
+    const onScroll = () => {
+      if (rafId) return;
+      rafId = requestAnimationFrame(update);
+    };
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    update();
+
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
+      video.removeEventListener('loadedmetadata', onMeta);
+      video.removeEventListener('loadeddata', paintFirstFrame);
+      if (rafId) cancelAnimationFrame(rafId);
+    };
+  }, [videoRef, sectionRef, disabled]);
+}
+
+function usePrefersReducedMotion() {
+  const [reduced, setReduced] = useState(false);
+  useEffect(() => {
+    if (typeof window === 'undefined' || !window.matchMedia) return;
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const apply = () => setReduced(mq.matches);
+    apply();
+    mq.addEventListener?.('change', apply);
+    return () => mq.removeEventListener?.('change', apply);
+  }, []);
+  return reduced;
+}
+
 export default function Hero() {
   const typed = useTyping(PHRASES);
+  const sectionRef = useRef(null);
+  const videoRef = useRef(null);
+  const reducedMotion = usePrefersReducedMotion();
+
+  useScrollControlledVideo(videoRef, sectionRef, reducedMotion);
 
   return (
     <section
+      ref={sectionRef}
       id="top"
-      className="relative isolate flex min-h-[100svh] w-full flex-col overflow-hidden"
+      className="relative isolate flex min-h-[100svh] w-full flex-col overflow-hidden bg-ink"
     >
-      <ParticleGrid />
+      {/* === SCROLL-CONTROLLED VIDEO BACKGROUND ===
+          When prefers-reduced-motion is on, the scroll hook short-circuits and
+          we just paint the first frame as a static poster. */}
+      <video
+        ref={videoRef}
+        src="/hero.mp4"
+        muted
+        playsInline
+        preload="auto"
+        aria-hidden="true"
+        tabIndex={-1}
+        disablePictureInPicture
+        className="pointer-events-none absolute inset-0 h-full w-full object-cover"
+        style={{
+          position: 'absolute',
+          inset: 0,
+          width: '100%',
+          height: '100%',
+          objectFit: 'cover',
+        }}
+      />
+
+      {/* Readability overlay — keeps cobalt + bone text legible against the
+          video. Sits between the video and all foreground content. */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0"
+        style={{ background: 'rgba(0, 0, 0, 0.55)' }}
+      />
 
       {/* === MASTHEAD ROW (mono small caps, cobalt rule under) === */}
       <motion.div
