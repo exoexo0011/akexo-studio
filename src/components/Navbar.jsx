@@ -33,18 +33,22 @@ export default function Navbar() {
       }`}
     >
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-6 px-5 py-4 sm:px-8 lg:grid lg:grid-cols-[auto_1fr_auto] lg:px-12">
-        {/* Logo — clean lowercase wordmark with a gradient dot */}
+        {/* Logo — image wordmark from /public/logo.png. Already includes
+            "studio" so no separate text label is needed. Fades in on mount. */}
         <a
           href="#top"
-          className="flex items-center gap-0.5 group lg:justify-self-start"
+          className="flex items-center group lg:justify-self-start"
+          aria-label="AkExo Studio — home"
         >
-          <span className="display text-2xl tracking-tight text-bone group-hover:opacity-90 transition-opacity">
-            akexo
-          </span>
-          <span className="display-italic text-2xl leading-none -ml-0.5">.</span>
-          <span className="ml-3 hidden font-mono text-[10px] uppercase tracking-[0.3em] text-bone/40 sm:inline">
-            studio
-          </span>
+          <motion.img
+            src="/logo.png"
+            alt="AkExo Studio"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
+            className="block group-hover:opacity-90 transition-opacity"
+            style={{ height: '48px', width: 'auto', objectFit: 'contain' }}
+          />
         </a>
 
         {/* Center nav — premium minimal, gradient sweep on hover */}
