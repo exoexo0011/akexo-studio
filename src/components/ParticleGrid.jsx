@@ -51,29 +51,37 @@ export default function ParticleGrid() {
       t += 0.008;
       ctx.clearRect(0, 0, w, h);
 
-      // dot grid
-      const spacing = 38;
+      // dot grid — ink dots on paper, with a roving vermilion scan that
+      // tints nearby dots toward the accent (newsprint halftone feel)
+      const spacing = 42;
       const ox = (mouseRef.current.x - 0.5) * 14;
       const oy = (mouseRef.current.y - 0.5) * 14;
+      const cx = w * 0.5 + Math.cos(t) * w * 0.35;
+      const cy = h * 0.45 + Math.sin(t * 0.8) * h * 0.3;
       for (let x = -spacing; x < w + spacing; x += spacing) {
         for (let y = -spacing; y < h + spacing; y += spacing) {
-          // distance from a roving "scan" position to make some dots glow
-          const cx = w * 0.5 + Math.cos(t) * w * 0.35;
-          const cy = h * 0.45 + Math.sin(t * 0.8) * h * 0.3;
           const dx = x - cx;
           const dy = y - cy;
           const d = Math.sqrt(dx * dx + dy * dy);
-          const glow = Math.max(0, 1 - d / 240);
-          const alpha = 0.06 + glow * 0.55;
-          ctx.fillStyle = `rgba(0, 255, 65, ${alpha})`;
-          const r = 1 + glow * 1.6;
+          const glow = Math.max(0, 1 - d / 260);
+          const r = 0.9 + glow * 1.6;
+          // base ink dot
+          const inkAlpha = 0.08 + (1 - glow) * 0.06;
+          ctx.fillStyle = `rgba(15, 14, 12, ${inkAlpha})`;
           ctx.beginPath();
-          ctx.arc(x + ox, y + oy, r, 0, Math.PI * 2);
+          ctx.arc(x + ox, y + oy, r * 0.9, 0, Math.PI * 2);
           ctx.fill();
+          // vermilion overlay near the scan — feels like spot-color print bleed
+          if (glow > 0.05) {
+            ctx.fillStyle = `rgba(230, 59, 30, ${glow * 0.85})`;
+            ctx.beginPath();
+            ctx.arc(x + ox, y + oy, r * (0.9 + glow * 0.7), 0, Math.PI * 2);
+            ctx.fill();
+          }
         }
       }
 
-      // floating particles
+      // floating particles — vermilion specks drifting up
       for (const p of particles) {
         p.x += p.vx;
         p.y += p.vy;
@@ -84,7 +92,7 @@ export default function ParticleGrid() {
         if (p.x < -10) p.x = w + 10;
         if (p.x > w + 10) p.x = -10;
 
-        ctx.fillStyle = `rgba(0, 255, 65, ${p.a})`;
+        ctx.fillStyle = `rgba(230, 59, 30, ${p.a * 0.85})`;
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
         ctx.fill();
@@ -115,8 +123,8 @@ export default function ParticleGrid() {
       <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-matrix/60 to-transparent animate-scan" />
       {/* perspective floor at bottom */}
       <div className="absolute inset-x-0 bottom-0 h-[55%] grid-floor opacity-40 [transform:perspective(800px)_rotateX(60deg)] origin-bottom" />
-      {/* deep vignette */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_30%,rgba(3,3,3,0.85)_85%)]" />
+      {/* deep vignette — fades into the parchment background */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_28%,rgba(239,230,210,0.92)_88%)]" />
     </div>
   );
 }

@@ -116,7 +116,7 @@ export default function Pricing() {
                 <p className="font-body text-sm text-bone/55">{t.pitch}</p>
               </div>
 
-              <div className="flex items-baseline gap-2 border-y border-white/5 py-5">
+              <div className="flex items-baseline gap-2 border-y border-bone/10 py-5">
                 <span
                   className={`display text-6xl ${
                     t.featured ? 'text-matrix' : 'text-bone'

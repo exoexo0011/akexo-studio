@@ -91,7 +91,7 @@ export default function Hero() {
           >
             <span className="block">I build</span>
             <span className="block">
-              <span className="text-matrix" style={{ textShadow: '0 0 28px rgba(0,255,65,0.35)' }}>
+              <span className="text-matrix" style={{ textShadow: '0 0 22px rgba(230, 59, 30, 0.28)' }}>
                 {typed}
               </span>
               <span
@@ -143,7 +143,7 @@ export default function Hero() {
 
 function Stat({ label, value }) {
   return (
-    <div className="flex flex-col gap-1 border-l border-white/10 pl-4">
+    <div className="flex flex-col gap-1 border-l border-bone/15 pl-4">
       <span className="text-bone font-bold text-sm sm:text-base normal-case tracking-normal font-body">
         {value}
       </span>

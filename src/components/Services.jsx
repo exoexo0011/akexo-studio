@@ -85,7 +85,7 @@ export default function Services() {
                   {s.desc}
                 </p>
 
-                <ul className="mt-auto space-y-1.5 border-t border-white/5 pt-5">
+                <ul className="mt-auto space-y-1.5 border-t border-bone/10 pt-5">
                   {s.features.map((f) => (
                     <li
                       key={f}

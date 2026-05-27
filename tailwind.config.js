@@ -4,13 +4,18 @@ export default {
   theme: {
     extend: {
       colors: {
-        ink: '#030303',
-        ink2: '#0a0a0a',
-        bone: '#f5f5f0',
+        // "Bone & Vermilion" palette
+        // ink   = primary background (warm parchment cream)
+        // ink2  = alt background (deeper cream)
+        // bone  = primary text (warm near-black ink)
+        // matrix = single accent (vermilion / hunter orange)
+        ink: '#EFE6D2',
+        ink2: '#E5DAC0',
+        bone: '#0F0E0C',
         matrix: {
-          DEFAULT: '#00FF41',
-          dim: '#00b82e',
-          glow: 'rgba(0, 255, 65, 0.45)',
+          DEFAULT: '#E63B1E',
+          dim: '#B82A0F',
+          glow: 'rgba(230, 59, 30, 0.45)',
         },
       },
       fontFamily: {
@@ -47,7 +52,9 @@ export default {
       },
       backgroundImage: {
         'grid-fade':
-          'radial-gradient(ellipse at 50% 40%, rgba(0,255,65,0.10), transparent 60%)',
+          'radial-gradient(ellipse at 50% 40%, rgba(230,59,30,0.14), transparent 65%)',
+        'paper-grain':
+          "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.06  0 0 0 0 0.055  0 0 0 0 0.05  0 0 0 0.18 0'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='0.55'/></svg>\")",
       },
     },
   },

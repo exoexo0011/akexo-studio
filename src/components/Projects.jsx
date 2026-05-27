@@ -102,7 +102,7 @@ export default function Projects() {
                       p.status === 'Live'
                         ? 'text-matrix'
                         : p.status === 'Beta'
-                          ? 'text-yellow-300/80'
+                          ? 'text-bone/55'
                           : 'text-bone/40'
                     }`}
                   >

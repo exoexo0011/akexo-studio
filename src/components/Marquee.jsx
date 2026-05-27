@@ -20,7 +20,7 @@ export default function Marquee() {
   return (
     <section
       aria-label="Tech stack"
-      className="relative border-y border-white/5 py-6 overflow-hidden"
+      className="relative border-y border-bone/10 py-6 overflow-hidden"
     >
       <div className="pointer-events-none absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-ink to-transparent z-10" />
       <div className="pointer-events-none absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-ink to-transparent z-10" />
