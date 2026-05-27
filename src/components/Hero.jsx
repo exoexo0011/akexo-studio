@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight, ArrowDown } from 'lucide-react';
 
@@ -56,79 +56,11 @@ const issueMonth = new Date()
   .toUpperCase();
 
 /**
- * useScrollControlledVideo
- * Drives `video.currentTime` from the user's scroll progress through the hero
- * section. When `disabled` is true (e.g. prefers-reduced-motion), the hook
- * leaves the video parked on its first frame.
+ * usePrefersReducedMotion
+ * Tracks the user's OS-level "reduce motion" preference. When true, we skip
+ * the autoplaying video background and fall back to a static dark color so
+ * motion-sensitive users aren't bombarded with looping footage.
  */
-function useScrollControlledVideo(videoRef, sectionRef, disabled) {
-  useEffect(() => {
-    const video = videoRef.current;
-    const section = sectionRef.current;
-    if (!video || !section) return;
-
-    const paintFirstFrame = () => {
-      try {
-        if (video.currentTime < 0.05) video.currentTime = 0.05;
-      } catch {
-        /* seek not yet allowed — ignore */
-      }
-    };
-    if (video.readyState >= 2) paintFirstFrame();
-    else video.addEventListener('loadeddata', paintFirstFrame, { once: true });
-
-    if (disabled) {
-      return () => {
-        video.removeEventListener('loadeddata', paintFirstFrame);
-      };
-    }
-
-    let rafId = 0;
-    let duration = 0;
-
-    const onMeta = () => {
-      duration = Number.isFinite(video.duration) ? video.duration : 0;
-      update();
-    };
-    if (video.readyState >= 1 && Number.isFinite(video.duration)) {
-      duration = video.duration;
-    } else {
-      video.addEventListener('loadedmetadata', onMeta);
-    }
-
-    const update = () => {
-      rafId = 0;
-      if (!duration) return;
-      const rect = section.getBoundingClientRect();
-      const scrolled = Math.min(Math.max(-rect.top, 0), rect.height);
-      const progress = rect.height > 0 ? scrolled / rect.height : 0;
-      const target = Math.min(progress * duration, duration - 0.01);
-      try {
-        video.currentTime = target;
-      } catch {
-        /* swallow seek errors during decode */
-      }
-    };
-
-    const onScroll = () => {
-      if (rafId) return;
-      rafId = requestAnimationFrame(update);
-    };
-
-    window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', onScroll);
-    update();
-
-    return () => {
-      window.removeEventListener('scroll', onScroll);
-      window.removeEventListener('resize', onScroll);
-      video.removeEventListener('loadedmetadata', onMeta);
-      video.removeEventListener('loadeddata', paintFirstFrame);
-      if (rafId) cancelAnimationFrame(rafId);
-    };
-  }, [videoRef, sectionRef, disabled]);
-}
-
 function usePrefersReducedMotion() {
   const [reduced, setReduced] = useState(false);
   useEffect(() => {
@@ -144,55 +76,60 @@ function usePrefersReducedMotion() {
 
 export default function Hero() {
   const typed = useTyping(PHRASES);
-  const sectionRef = useRef(null);
-  const videoRef = useRef(null);
   const reducedMotion = usePrefersReducedMotion();
-
-  useScrollControlledVideo(videoRef, sectionRef, reducedMotion);
 
   return (
     <section
-      ref={sectionRef}
       id="top"
       className="relative isolate flex min-h-[100svh] w-full flex-col overflow-hidden bg-ink"
     >
-      {/* === SCROLL-CONTROLLED VIDEO BACKGROUND === */}
-      <video
-        ref={videoRef}
-        src="/hero.mp4"
-        muted
-        playsInline
-        preload="auto"
+      {/* === LOOPING VIDEO BACKGROUND (z-index: 0) ===
+          Simple autoplay + loop. Skipped entirely when the user prefers
+          reduced motion — the section's bg-ink shows through instead. */}
+      {!reducedMotion && (
+        <video
+          src="/hero.mp4"
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+          aria-hidden="true"
+          tabIndex={-1}
+          disablePictureInPicture
+          className="pointer-events-none"
+          style={{
+            position: 'absolute',
+            inset: 0,
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+            zIndex: 0,
+          }}
+        />
+      )}
+
+      {/* === DARK OVERLAY (z-index: 1) ===
+          Sits above the video, below the content. Solid 65% black per spec
+          so the white display type stays cleanly legible over any frame. */}
+      <div
         aria-hidden="true"
-        tabIndex={-1}
-        disablePictureInPicture
-        className="pointer-events-none absolute inset-0 h-full w-full object-cover"
+        className="pointer-events-none"
         style={{
           position: 'absolute',
           inset: 0,
-          width: '100%',
-          height: '100%',
-          objectFit: 'cover',
+          background: 'rgba(0, 0, 0, 0.65)',
+          zIndex: 1,
         }}
       />
 
-      {/* Readability overlay over the video. Slightly darker than v3 to keep
-          the new white type cleanly legible. */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0"
-        style={{
-          background:
-            'linear-gradient(180deg, rgba(5,5,7,0.45) 0%, rgba(5,5,7,0.65) 50%, rgba(5,5,7,0.85) 100%)',
-        }}
-      />
-
-      {/* === MASTHEAD ROW === */}
+      {/* === MASTHEAD ROW (z-index: 2) === */}
       <motion.div
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.4 }}
-        className="relative z-10 mx-auto w-full max-w-7xl px-5 sm:px-8 lg:px-12 pt-28 md:pt-32"
+        className="relative mx-auto w-full max-w-7xl px-5 sm:px-8 lg:px-12 pt-28 md:pt-32"
+        style={{ zIndex: 2 }}
       >
         <div className="flex flex-wrap items-baseline justify-between gap-3 font-mono text-[10px] uppercase tracking-[0.28em] text-bone/55">
           <span>
@@ -215,8 +152,11 @@ export default function Hero() {
         <div className="rule-line-accent mt-4" />
       </motion.div>
 
-      {/* === DISPLAY HEADLINE === */}
-      <div className="relative z-10 mx-auto w-full max-w-7xl flex-1 flex items-center px-5 sm:px-8 lg:px-12 py-12 md:py-20">
+      {/* === DISPLAY HEADLINE (z-index: 2) === */}
+      <div
+        className="relative mx-auto w-full max-w-7xl flex-1 flex items-center px-5 sm:px-8 lg:px-12 py-12 md:py-20"
+        style={{ zIndex: 2 }}
+      >
         <motion.div
           initial="hidden"
           animate="visible"
@@ -289,12 +229,13 @@ export default function Hero() {
         </motion.div>
       </div>
 
-      {/* === BOTTOM INDEX === */}
+      {/* === BOTTOM INDEX (z-index: 2) === */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.6, delay: 0.9 }}
-        className="relative z-10 mx-auto w-full max-w-7xl px-5 sm:px-8 lg:px-12 pb-8"
+        className="relative mx-auto w-full max-w-7xl px-5 sm:px-8 lg:px-12 pb-8"
+        style={{ zIndex: 2 }}
       >
         <div className="rule-line-accent mb-4" />
         <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-2 font-mono text-[10px] uppercase tracking-[0.25em] text-bone/55">
