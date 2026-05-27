@@ -86,18 +86,22 @@ export default function Projects() {
             >
               {/* === Header row ===
                   Editorial code tag + thin divider + status ping. The
-                  status uses the same coral pulse pattern as every other
-                  "Live" indicator on the site so it reads consistently
-                  across sections. */}
+                  status ping uses pink (#FF69B4) — a deliberate accent
+                  unique to this section, distinct from the site-wide
+                  coral that every other "Live" indicator carries. */}
               <div className="flex items-center gap-3">
                 <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-matrix">
                   {p.code}
                 </span>
                 <span className="h-px w-6 bg-matrix/40" />
-                <span className="font-mono text-[10px] uppercase tracking-[0.25em] flex items-center gap-1.5 text-coral">
+                {/* Status ping — pink (#FF69B4) for the Projects section
+                    only. Other sections (Hero, Pricing, etc.) keep the
+                    site-wide `bg-coral` / `text-coral` accent so the
+                    pink stays a deliberate Work-section signal. */}
+                <span className="font-mono text-[10px] uppercase tracking-[0.25em] flex items-center gap-1.5 text-[#FF69B4]">
                   <span className="relative flex h-1.5 w-1.5">
-                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-coral opacity-70" />
-                    <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-coral" />
+                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#FF69B4] opacity-70" />
+                    <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[#FF69B4]" />
                   </span>
                   {p.status}
                 </span>
