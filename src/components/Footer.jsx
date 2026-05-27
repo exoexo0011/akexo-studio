@@ -41,23 +41,23 @@ export default function Footer() {
         </div>
 
         {/* === Bottom bar ===
-            Three clusters at md+, separated by md:justify-between:
-              1. Left  — brand lockup (logo + live indicator)
-              2. Mid   — copyright + tagline (mono caps, dot-separated)
-              3. Right — circular Back-to-top button
-            On mobile they stack via flex-col; the button lives last so it
-            ends up nearest the user's thumb. */}
-        <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between border-t border-white/[0.08] pt-8">
-          {/* 1 — Brand lockup. The full wordmark already says "studio"
-                 so no text label sits beside it. */}
-          <div className="flex items-center gap-4">
+            Mobile (default): vertical stack, every cluster centered. Each
+            cluster's content is also center-aligned so the column feels
+            intentional rather than just naturally collapsed.
+            Desktop (md+):    horizontal three-column layout via flex-row +
+            justify-between, with text-left restored. */}
+        <div className="flex flex-col items-center gap-6 text-center border-t border-white/[0.08] pt-8 md:flex-row md:items-center md:justify-between md:gap-8 md:text-left">
+          {/* 1 — Brand lockup. Logo is always shown; the live indicator is
+                 hidden on the smallest screens so the mobile column stays
+                 tidy and the brand mark gets the spotlight. */}
+          <div className="flex flex-col items-center gap-3 sm:flex-row sm:items-center sm:gap-4">
             <a
               href="#top"
               onClick={(e) => {
                 e.preventDefault();
                 scrollToTop();
               }}
-              className="flex items-center group"
+              className="group inline-flex"
               aria-label="AkExo Studio — back to top"
             >
               <img
@@ -71,7 +71,7 @@ export default function Footer() {
                 className="block group-hover:opacity-90 transition-opacity"
               />
             </a>
-            <span className="hidden sm:flex items-center gap-2 pl-4 border-l border-white/[0.08]">
+            <span className="hidden sm:flex items-center gap-2 sm:pl-4 sm:border-l sm:border-white/[0.08]">
               <span className="relative flex h-2 w-2">
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-coral opacity-70" />
                 <span className="relative inline-flex h-2 w-2 rounded-full bg-coral" />
@@ -82,24 +82,34 @@ export default function Footer() {
             </span>
           </div>
 
-          {/* 2 — Copyright + tagline */}
-          <div className="flex flex-wrap items-center gap-x-5 gap-y-2 font-mono text-[10px] uppercase tracking-[0.25em] text-bone/55">
-            <span>© {new Date().getFullYear()} AkExo Studio</span>
-            <span className="text-bone/25">/</span>
-            <span>Written, designed, and shipped by one person.</span>
+          {/* 2 — Copyright + tagline.
+                 Mobile stacks them on two centered lines; desktop reflows
+                 onto a single row. The brand-name line uses MIXED CASE
+                 (no `uppercase` utility) so "AkExo Studio" reads exactly
+                 the way it should — the all-caps editorial treatment is
+                 only kept for the generic descriptor underneath. */}
+          <div className="flex flex-col items-center gap-1.5 md:flex-row md:flex-wrap md:items-center md:justify-center md:gap-x-4 md:gap-y-1">
+            <span className="font-mono text-[11px] tracking-tight text-bone/70">
+              © {new Date().getFullYear()} AkExo Studio
+            </span>
+            <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-bone/55">
+              Written, designed, and shipped by one person.
+            </span>
           </div>
 
           {/* 3 — Back to top.
-              Real <button> rather than an anchor: this is a UI control,
-              not navigation. The violet halo pulses via halo_pulse, which
-              animates box-shadow only — leaving the transform channel
-              free so hover:scale-110 works without conflict. */}
+              48x48 circular button with a violet halo that pulses via the
+              halo_pulse keyframe (see tailwind.config.js). Colors are set
+              with arbitrary-value bracket syntax so the build can't quietly
+              drop them if the opacity-modifier shorthand on a hex token
+              ever fails to resolve. Hover swaps the translucent fill for a
+              solid violet and bumps the scale by 10%. */}
           <button
             type="button"
             onClick={scrollToTop}
             aria-label="Back to top"
             title="Back to top"
-            className="group inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-violet/50 bg-violet/20 text-bone transition-all duration-300 ease-out animate-halo_pulse hover:scale-110 hover:bg-violet hover:border-violet focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet/70 focus-visible:ring-offset-2 focus-visible:ring-offset-ink"
+            className="group inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-[rgba(139,92,246,0.5)] bg-[rgba(139,92,246,0.2)] text-white transition-all duration-300 ease-out animate-halo_pulse hover:scale-110 hover:bg-[#8B5CF6] hover:border-[#8B5CF6] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(139,92,246,0.7)] focus-visible:ring-offset-2 focus-visible:ring-offset-ink"
           >
             <ArrowUp size={20} strokeWidth={2.25} />
           </button>

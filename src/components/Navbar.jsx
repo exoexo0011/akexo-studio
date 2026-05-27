@@ -105,8 +105,15 @@ function Socials() {
               ease: [0.22, 1, 0.36, 1],
               delay: 0.55 + i * 0.08,
             }}
-            className={`group relative inline-flex h-8 w-8 items-center justify-center rounded-full bg-white/[0.08] text-bone transition-all duration-300 ease-out hover:bg-white/[0.12] hover:scale-110 hover:shadow-[0_0_22px_rgba(139,92,246,0.55)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-400/70 md:h-10 md:w-10 ${
-              s.mobile ? '' : 'hidden lg:inline-flex'
+            /* Display class is applied conditionally (not in the static
+               base) on purpose: if both `inline-flex` and `hidden` were
+               in the unprefixed class list, the alphabetically-later
+               `inline-flex` would win in Tailwind's CSS output and the
+               mobile-hidden icons (Threads, Email) would still render
+               on small screens. Splitting it into one branch per case
+               eliminates that conflict cleanly. */
+            className={`group relative h-8 w-8 items-center justify-center rounded-full bg-white/[0.08] text-bone transition-all duration-300 ease-out hover:bg-white/[0.12] hover:scale-110 hover:shadow-[0_0_22px_rgba(139,92,246,0.55)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-400/70 md:h-10 md:w-10 ${
+              s.mobile ? 'inline-flex' : 'hidden lg:inline-flex'
             }`}
           >
             <Icon className="h-[22px] w-[22px] md:h-7 md:w-7" />
@@ -273,9 +280,11 @@ export default function Navbar() {
             transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
             className="fixed inset-0 z-[100] lg:hidden"
             style={{
-              backgroundColor: 'rgba(0, 0, 0, 0.95)',
-              backdropFilter: 'blur(24px) saturate(140%)',
-              WebkitBackdropFilter: 'blur(24px) saturate(140%)',
+              // 0.98 (not 0.95) so the navbar's social icons sitting
+              // beneath the overlay aren't faintly visible through it.
+              backgroundColor: 'rgba(0, 0, 0, 0.98)',
+              backdropFilter: 'blur(20px)',
+              WebkitBackdropFilter: 'blur(20px)',
             }}
           >
             {/* Subtle violet/pink atmosphere accent — soft radial blob in
