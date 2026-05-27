@@ -104,17 +104,17 @@ function useLiveVisitorCount() {
   return count;
 }
 
-/* Brand-coral red used by the live-visitors indicator. Defined once so the
-   dot, its halo, and the "LIVE" word all stay in lockstep. */
-const VISITOR_ACCENT = '#FF6B47';
+/* Hot-pink accent (#FF69B4) used by the live-visitors indicator. Defined
+   once so the dot, its halo, and the "LIVE" word all stay in lockstep. */
+const VISITOR_ACCENT = '#FF69B4';
 
 /**
  * LiveVisitors
  * Plain-text live indicator rendered just below the navbar, left-aligned.
- * Format: [pulsing coral dot] LIVE · [count] VIEWING NOW
+ * Format: [pulsing pink dot] LIVE · [count] VIEWING NOW
  * No pill, no border, no background — just typography on the dark hero.
  * The dot uses Tailwind's `animate-ping` for the radiating ring layered
- * over a static disc with a coral box-shadow halo. The count fade-swaps
+ * over a static disc with a pink box-shadow halo. The count fade-swaps
  * via AnimatePresence on each tick.
  */
 function LiveVisitors() {
@@ -131,7 +131,7 @@ function LiveVisitors() {
       aria-live="polite"
       aria-label={`${count} people viewing now`}
     >
-      {/* Pulsing coral dot — animate-ping ring + static disc with halo. */}
+      {/* Pulsing pink dot — animate-ping ring + static disc with halo. */}
       <span aria-hidden="true" className="relative flex h-2 w-2">
         <span
           className="absolute inline-flex h-full w-full animate-ping rounded-full opacity-75"
@@ -142,12 +142,12 @@ function LiveVisitors() {
           style={{
             backgroundColor: VISITOR_ACCENT,
             boxShadow:
-              '0 0 8px rgba(255, 107, 71, 0.75), 0 0 16px rgba(255, 107, 71, 0.40)',
+              '0 0 8px rgba(255, 105, 180, 0.75), 0 0 16px rgba(255, 105, 180, 0.40)',
           }}
         />
       </span>
 
-      {/* "LIVE" in coral. */}
+      {/* "LIVE" in pink. */}
       <span style={{ color: VISITOR_ACCENT }}>Live</span>
 
       {/* Middle-dot divider in muted white. */}
