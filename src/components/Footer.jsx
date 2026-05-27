@@ -13,18 +13,34 @@ export default function Footer() {
         </div>
 
         <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between border-t border-white/[0.08] pt-8">
-          <div className="flex items-center gap-3">
-            <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-coral opacity-70" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-coral" />
-            </span>
-            <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-bone/65">
-              Solo AI Dev Studio
+          {/* Brand lockup — icon + name. The icon is the primary identifier;
+              "AkExo Studio" sits beside it. The live indicator follows. */}
+          <div className="flex items-center gap-4">
+            <a href="#top" className="flex items-center gap-3 group">
+              <img
+                src="/logo-icon.png"
+                alt=""
+                aria-hidden="true"
+                style={{ height: '40px', width: 'auto', objectFit: 'contain' }}
+                className="block group-hover:opacity-90 transition-opacity"
+              />
+              <span className="font-mono text-[11px] uppercase tracking-[0.28em] text-bone group-hover:text-bone transition-colors">
+                AkExo Studio
+              </span>
+            </a>
+            <span className="hidden sm:flex items-center gap-2 pl-4 border-l border-white/[0.08]">
+              <span className="relative flex h-2 w-2">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-coral opacity-70" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-coral" />
+              </span>
+              <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-bone/65">
+                Solo AI Dev Studio
+              </span>
             </span>
           </div>
 
           <div className="flex flex-wrap items-center gap-x-5 gap-y-2 font-mono text-[10px] uppercase tracking-[0.25em] text-bone/55">
-            <span>© {new Date().getFullYear()} AKEXO</span>
+            <span>© {new Date().getFullYear()} AkExo Studio</span>
             <span className="text-bone/25">/</span>
             <span>Written, designed, and shipped by one person.</span>
             <span className="text-bone/25">/</span>

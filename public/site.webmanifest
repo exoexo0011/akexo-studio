@@ -1,0 +1,24 @@
+{
+  "name": "AkExo Studio",
+  "short_name": "AkExo",
+  "description": "Solo AI dev studio. Sites, apps, AI tools, and automations shipped in 14 days.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#050507",
+  "theme_color": "#050507",
+  "icons": [
+    {
+      "src": "/logo-icon.png",
+      "sizes": "any",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/logo-icon.png",
+      "sizes": "any",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

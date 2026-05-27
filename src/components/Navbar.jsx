@@ -33,15 +33,16 @@ export default function Navbar() {
       }`}
     >
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-6 px-5 py-4 sm:px-8 lg:grid lg:grid-cols-[auto_1fr_auto] lg:px-12">
-        {/* Logo — image wordmark from /public/logo.png. Already includes
-            "studio" so no separate text label is needed. Fades in on mount. */}
+        {/* Logo — full wordmark image from /public/logo-full.png. Already
+            includes "studio" so no separate text label is needed. Fades in
+            on mount. */}
         <a
           href="#top"
           className="flex items-center group lg:justify-self-start"
           aria-label="AkExo Studio — home"
         >
           <motion.img
-            src="/logo.png"
+            src="/logo-full.png"
             alt="AkExo Studio"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
