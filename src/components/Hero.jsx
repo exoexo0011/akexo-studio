@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, ArrowDown } from 'lucide-react';
 
 const PHRASES = ['AI tools', 'web apps', 'automations', 'mobile apps'];
@@ -67,6 +67,107 @@ function usePrefersReducedMotion() {
   return reduced;
 }
 
+/**
+ * useLiveVisitorCount
+ * Drives the fake "X people viewing now" counter. Initial value is a random
+ * number in [12, 28]. Every 20–40 seconds the count steps by +/-1, clamped
+ * to [8, 35]. At the boundaries we force the next step away from the wall
+ * so the count doesn't "stick" — keeps the rhythm feeling organic.
+ */
+const VISITOR_MIN = 8;
+const VISITOR_MAX = 35;
+
+function useLiveVisitorCount() {
+  const [count, setCount] = useState(() => 12 + Math.floor(Math.random() * 17));
+
+  useEffect(() => {
+    let timeoutId;
+
+    const scheduleNext = () => {
+      const delay = (20 + Math.random() * 20) * 1000;
+      timeoutId = setTimeout(() => {
+        setCount((current) => {
+          let direction;
+          if (current <= VISITOR_MIN) direction = 1;
+          else if (current >= VISITOR_MAX) direction = -1;
+          else direction = Math.random() < 0.5 ? -1 : 1;
+          return current + direction;
+        });
+        scheduleNext();
+      }, delay);
+    };
+
+    scheduleNext();
+    return () => clearTimeout(timeoutId);
+  }, []);
+
+  return count;
+}
+
+/* Brand-coral red used by the live-visitors pill. Defined once so the dot,
+   the dot's halo, and the count text all stay in lockstep. */
+const VISITOR_ACCENT = '#FF6B47';
+
+/**
+ * LiveVisitors
+ * Small pill rendered at the top of the hero, just below the fixed navbar.
+ * Coral/red pulsing dot, coral/red number that fade-swaps when the count
+ * updates, and a muted-white descriptor in editorial mono caps. The dot
+ * uses Tailwind's built-in `animate-ping` for the radiating ring plus a
+ * static disc with a layered coral box-shadow halo.
+ */
+function LiveVisitors() {
+  const count = useLiveVisitorCount();
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: -8 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6, delay: 0.35, ease: [0.22, 1, 0.36, 1] }}
+      className="inline-flex items-center gap-2.5 rounded-full border border-white/[0.08] bg-white/[0.04] px-3.5 py-1.5 backdrop-blur-md"
+      role="status"
+      aria-live="polite"
+      aria-label={`${count} people viewing now`}
+    >
+      <span aria-hidden="true" className="relative flex h-2 w-2">
+        <span
+          className="absolute inline-flex h-full w-full animate-ping rounded-full opacity-75"
+          style={{ backgroundColor: VISITOR_ACCENT }}
+        />
+        <span
+          className="relative inline-flex h-2 w-2 rounded-full"
+          style={{
+            backgroundColor: VISITOR_ACCENT,
+            boxShadow:
+              '0 0 8px rgba(255, 107, 71, 0.75), 0 0 16px rgba(255, 107, 71, 0.40)',
+          }}
+        />
+      </span>
+
+      <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-bone/70">
+        {/* AnimatePresence with mode="wait" + key={count} performs the
+            fade-out / fade-in swap on every count change. tabular-nums
+            keeps the number from jittering as glyph widths change between
+            9-and-below and 10-and-above. */}
+        <AnimatePresence mode="wait" initial={false}>
+          <motion.span
+            key={count}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.25, ease: 'easeOut' }}
+            className="inline-block tabular-nums"
+            style={{ color: VISITOR_ACCENT }}
+          >
+            {count}
+          </motion.span>
+        </AnimatePresence>{' '}
+        people viewing now
+      </span>
+    </motion.div>
+  );
+}
+
 export default function Hero() {
   const typed = useTyping(PHRASES);
   const reducedMotion = usePrefersReducedMotion();
@@ -115,6 +216,17 @@ export default function Hero() {
           zIndex: 1,
         }}
       />
+
+      {/* === LIVE VISITORS PILL (z-index: 2) ===
+          Sits just below the fixed navbar. pt-24 / md:pt-28 clears the
+          navbar bar (~68px on mobile / ~104px on desktop) and lets the
+          headline below center itself in the remaining space. */}
+      <div
+        className="relative mx-auto w-full max-w-7xl px-5 sm:px-8 lg:px-12 pt-24 md:pt-28"
+        style={{ zIndex: 2 }}
+      >
+        <LiveVisitors />
+      </div>
 
       {/* === DISPLAY HEADLINE (z-index: 2) === */}
       <div
