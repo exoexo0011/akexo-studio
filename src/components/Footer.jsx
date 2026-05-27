@@ -37,7 +37,7 @@ export default function Footer() {
 
   return (
     <footer className="relative border-t border-white/[0.08]">
-      <div className="mx-auto max-w-7xl px-5 py-16 sm:px-8 lg:px-12">
+      <div className="mx-auto max-w-7xl px-5 py-8 sm:px-8 md:py-16 lg:px-12">
         {/* === Masthead row ===
             Big "AkExo" wordmark on the left, "END / FIN" badge on the right
             (sm+ only). The h2 is treated as a single block of inline-block
@@ -45,7 +45,7 @@ export default function Footer() {
             no inter-letter gap; the violet pulse dot trails the last letter
             with a fixed margin and a baseline alignment so it reads like
             punctuation. */}
-        <div className="flex items-end justify-between gap-6 mb-10">
+        <div className="flex items-end justify-between gap-6 mb-4 md:mb-10">
           <motion.h2
             initial="hidden"
             whileInView="visible"
@@ -120,7 +120,7 @@ export default function Footer() {
             right-aligned. The DOM order is logo → copyright → button on
             mobile via order-* utilities; on desktop it becomes copyright →
             logo → button via the order-* overrides at md. */}
-        <div className="flex flex-col items-center gap-6 border-t border-white/[0.08] pt-8 md:grid md:grid-cols-3 md:items-center md:gap-8">
+        <div className="flex flex-col items-center gap-3 border-t border-white/[0.08] pt-4 md:grid md:grid-cols-3 md:items-center md:gap-8 md:pt-8">
           {/* 1 — Logo (icon-only).
                  Mobile: order-1 → first in the column.
                  Desktop: order-2 → middle column, justify-self-center keeps
