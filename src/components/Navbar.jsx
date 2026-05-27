@@ -21,6 +21,40 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
+  /**
+   * handleNavClick
+   * Universal smooth-scroll handler used by every link in the navbar (desktop
+   * and mobile). We bypass the browser's default anchor jump for two reasons:
+   *  1. The mobile menu lives inside a fixed-position, animating header. On
+   *     mobile Safari/Chrome, native hash navigation + a concurrent height
+   *     animation can cancel or jitter the scroll. Driving it with
+   *     scrollIntoView gives us deterministic behavior on every device.
+   *  2. We always want the menu to close BEFORE scrolling so the destination
+   *     isn't briefly hidden behind a collapsing panel.
+   *
+   * Reduced-motion users still get an instant snap because the global CSS
+   * rule overrides scroll-behavior to auto, and modern browsers also honor
+   * the preference for the JS scrollIntoView option.
+   */
+  const handleNavClick = (e, href) => {
+    if (!href || !href.startsWith('#')) return;
+    e.preventDefault();
+    setOpen(false);
+
+    const id = href.slice(1);
+    const target = id ? document.getElementById(id) : document.documentElement;
+    if (!target) return;
+
+    // requestAnimationFrame lets the menu close-animation begin in the same
+    // frame, avoiding a flash where the panel covers the scroll destination.
+    requestAnimationFrame(() => {
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      if (typeof window !== 'undefined' && window.history?.replaceState) {
+        window.history.replaceState(null, '', href);
+      }
+    });
+  };
+
   return (
     <motion.header
       initial={{ y: -40, opacity: 0 }}
@@ -38,6 +72,7 @@ export default function Navbar() {
             on mount. */}
         <a
           href="#top"
+          onClick={(e) => handleNavClick(e, '#top')}
           className="flex items-center group lg:justify-self-start"
           aria-label="AkExo Studio — home"
         >
@@ -58,6 +93,7 @@ export default function Navbar() {
             <a
               key={l.href}
               href={l.href}
+              onClick={(e) => handleNavClick(e, l.href)}
               className="px-4 py-2 font-body text-[13px] font-medium text-bone/70 hover:text-bone transition-colors rounded-full hover:bg-white/[0.05]"
             >
               {l.label}
@@ -68,6 +104,7 @@ export default function Navbar() {
         {/* Right CTA */}
         <a
           href="#contact"
+          onClick={(e) => handleNavClick(e, '#contact')}
           className="hidden lg:inline-flex lg:justify-self-end btn-primary !px-5 !py-2.5 !text-[13px]"
         >
           Book the call
@@ -98,7 +135,7 @@ export default function Navbar() {
                 <a
                   key={l.href}
                   href={l.href}
-                  onClick={() => setOpen(false)}
+                  onClick={(e) => handleNavClick(e, l.href)}
                   className="px-3 py-3 font-body text-base text-bone/85 hover:text-bone hover:bg-white/[0.04] rounded-xl transition-colors"
                 >
                   {l.label}
@@ -106,7 +143,7 @@ export default function Navbar() {
               ))}
               <a
                 href="#contact"
-                onClick={() => setOpen(false)}
+                onClick={(e) => handleNavClick(e, '#contact')}
                 className="btn-primary mt-4 justify-center"
               >
                 Book the call

@@ -45,6 +45,14 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Sections targeted by anchor links need an offset equal to the navbar's
+   fixed height (≈ 104px: py-4 + a 72px logo). Without this, the heading of
+   the destination section ends up hidden behind the navbar after a smooth
+   scroll. Applies to every nav target. */
+section[id] {
+  scroll-margin-top: 96px;
+}
+
 html,
 body {
   background: var(--bg-1);
