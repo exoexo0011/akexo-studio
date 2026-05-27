@@ -1,4 +1,16 @@
+import { ArrowUp } from 'lucide-react';
+
 export default function Footer() {
+  /* Smooth-scroll the page back to the very top. Using window.scrollTo is
+     more explicit than an href="#top" anchor — it always reaches y=0 even
+     if the hero section ever gets repositioned, and the global CSS rule
+     `html { scroll-behavior: smooth }` already handles reduced-motion
+     preferences for us. */
+  const scrollToTop = () => {
+    if (typeof window === 'undefined') return;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   return (
     <footer className="relative border-t border-white/[0.08]">
       <div className="mx-auto max-w-7xl px-5 py-16 sm:px-8 lg:px-12">
@@ -28,15 +40,34 @@ export default function Footer() {
           </span>
         </div>
 
-        <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between border-t border-white/[0.08] pt-8">
-          {/* Brand lockup — icon + name. The icon is the primary identifier;
-              "AkExo Studio" sits beside it. The live indicator follows. */}
+        {/* === Bottom bar ===
+            Three clusters at md+, separated by md:justify-between:
+              1. Left  — brand lockup (logo + live indicator)
+              2. Mid   — copyright + tagline (mono caps, dot-separated)
+              3. Right — circular Back-to-top button
+            On mobile they stack via flex-col; the button lives last so it
+            ends up nearest the user's thumb. */}
+        <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between border-t border-white/[0.08] pt-8">
+          {/* 1 — Brand lockup. The full wordmark already says "studio"
+                 so no text label sits beside it. */}
           <div className="flex items-center gap-4">
-            <a href="#top" className="flex items-center gap-3 group">
+            <a
+              href="#top"
+              onClick={(e) => {
+                e.preventDefault();
+                scrollToTop();
+              }}
+              className="flex items-center group"
+              aria-label="AkExo Studio — back to top"
+            >
               <img
                 src="/logo-full.png"
                 alt="AkExo Studio"
-                style={{ height: '48px', width: 'auto', objectFit: 'contain' }}
+                style={{
+                  height: '40px',
+                  width: 'auto',
+                  objectFit: 'contain',
+                }}
                 className="block group-hover:opacity-90 transition-opacity"
               />
             </a>
@@ -51,18 +82,27 @@ export default function Footer() {
             </span>
           </div>
 
+          {/* 2 — Copyright + tagline */}
           <div className="flex flex-wrap items-center gap-x-5 gap-y-2 font-mono text-[10px] uppercase tracking-[0.25em] text-bone/55">
             <span>© {new Date().getFullYear()} AkExo Studio</span>
             <span className="text-bone/25">/</span>
             <span>Written, designed, and shipped by one person.</span>
-            <span className="text-bone/25">/</span>
-            <a
-              href="#top"
-              className="hover:text-bone transition-colors sweep"
-            >
-              Back to top ↑
-            </a>
           </div>
+
+          {/* 3 — Back to top.
+              Real <button> rather than an anchor: this is a UI control,
+              not navigation. The violet halo pulses via halo_pulse, which
+              animates box-shadow only — leaving the transform channel
+              free so hover:scale-110 works without conflict. */}
+          <button
+            type="button"
+            onClick={scrollToTop}
+            aria-label="Back to top"
+            title="Back to top"
+            className="group inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-violet/50 bg-violet/20 text-bone transition-all duration-300 ease-out animate-halo_pulse hover:scale-110 hover:bg-violet hover:border-violet focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet/70 focus-visible:ring-offset-2 focus-visible:ring-offset-ink"
+          >
+            <ArrowUp size={20} strokeWidth={2.25} />
+          </button>
         </div>
       </div>
     </footer>

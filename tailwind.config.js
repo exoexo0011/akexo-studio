@@ -77,6 +77,20 @@ export default {
           '0%, 100%': { transform: 'scale(1)' },
           '50%': { transform: 'scale(1.2)' },
         },
+        // Halo pulse — animates the box-shadow only, leaving transform
+        // free for hover scale. Used on the footer's "back to top" button
+        // so the violet halo around it gently breathes without fighting
+        // the hover:scale-110 transform.
+        halo_pulse: {
+          '0%, 100%': {
+            boxShadow:
+              '0 0 16px rgba(139, 92, 246, 0.35), 0 0 32px rgba(139, 92, 246, 0.12)',
+          },
+          '50%': {
+            boxShadow:
+              '0 0 24px rgba(139, 92, 246, 0.65), 0 0 48px rgba(139, 92, 246, 0.30)',
+          },
+        },
       },
       animation: {
         blink: 'blink 1s steps(2, start) infinite',
@@ -86,6 +100,7 @@ export default {
         marquee: 'marquee 50s linear infinite',
         gradient_shift: 'gradient_shift 8s ease-in-out infinite',
         pulse_glow: 'pulse_glow 2s ease-in-out infinite',
+        halo_pulse: 'halo_pulse 2.4s ease-in-out infinite',
       },
     },
   },
