@@ -51,7 +51,7 @@ export default function Footer() {
             whileInView="visible"
             viewport={{ once: true, amount: 0.4 }}
             aria-label="AkExo Studio"
-            className="leading-[0.9] text-[5rem] md:text-[10rem]"
+            className="leading-[0.9] text-[4rem] md:text-[10rem]"
             style={{
               /* Clash Display is the primary face. Syne and Bricolage
                  Grotesque follow as graceful fallbacks while Fontshare
@@ -136,7 +136,6 @@ export default function Footer() {
               src="/logo-icon.png"
               alt="AkExo Studio"
               style={{
-                width: '180px',
                 height: 'auto',
                 objectFit: 'contain',
                 /* Layered drop-shadow paints a soft violet halo around
@@ -148,11 +147,14 @@ export default function Footer() {
                 filter:
                   'drop-shadow(0 0 20px rgba(139,92,246,0.8)) drop-shadow(0 0 40px rgba(139,92,246,0.4))',
               }}
-              /* animate-logo_pulse loops a 5% scale breath every 3s. Only
+              /* Responsive width: 80px on mobile, 180px from md+. Keeps
+                 desktop sizing exactly where it was while taming the
+                 footer block on small screens.
+                 animate-logo_pulse loops a 5% scale breath every 3s. Only
                  the transform channel is touched, so the inline filter
                  stays put; group-hover:opacity-90 lives on the opacity
                  channel and is also non-conflicting. */
-              className="block animate-logo_pulse group-hover:opacity-90 transition-opacity"
+              className="block w-[80px] md:w-[180px] animate-logo_pulse group-hover:opacity-90 transition-opacity"
             />
           </a>
 
