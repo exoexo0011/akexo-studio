@@ -278,13 +278,30 @@ export default function Navbar() {
             animate={{ x: 0 }}
             exit={{ x: '100%' }}
             transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-            className="fixed inset-0 z-[100] lg:hidden"
+            className="lg:hidden"
             style={{
-              // 0.98 (not 0.95) so the navbar's social icons sitting
-              // beneath the overlay aren't faintly visible through it.
-              backgroundColor: 'rgba(0, 0, 0, 0.98)',
-              backdropFilter: 'blur(20px)',
-              WebkitBackdropFilter: 'blur(20px)',
+              /* Forced to fully opaque black so NOTHING bleeds through:
+                 - position: fixed + all-side 0 anchors the panel to the
+                   viewport instead of any transformed ancestor (the
+                   navbar header itself can become a containing block
+                   once framer-motion leaves a transform on it).
+                 - backgroundColor uses a solid hex (no rgba/opacity) so
+                   the page content behind cannot be perceived at all.
+                 - z-index 9999 places it above every other layer in
+                   the app, including the fixed hero <video> background.
+                 - backdrop-filter is intentionally absent — any blur
+                   effect requires translucency to be visible, which is
+                   precisely what we don't want here.
+                 - isolation: isolate creates a fresh stacking context
+                   so no parent's opacity/filter can dim this layer. */
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              backgroundColor: '#000000',
+              zIndex: 9999,
+              isolation: 'isolate',
             }}
           >
             {/* Subtle violet/pink atmosphere accent — soft radial blob in
