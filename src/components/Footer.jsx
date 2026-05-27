@@ -108,54 +108,50 @@ export default function Footer() {
         </div>
 
         {/* === Bottom bar ===
-            Mobile (default): vertical stack, every cluster centered. Each
-            cluster's content is also center-aligned so the column feels
-            intentional rather than just naturally collapsed.
-            Desktop (md+):    horizontal three-column layout via flex-row +
-            justify-between, with text-left restored. */}
-        <div className="flex flex-col items-center gap-6 text-center border-t border-white/[0.08] pt-8 md:flex-row md:items-center md:justify-between md:gap-8 md:text-left">
-          {/* 1 — Brand lockup. Logo is always shown; the live indicator is
-                 hidden on the smallest screens so the mobile column stays
-                 tidy and the brand mark gets the spotlight. */}
-          <div className="flex flex-col items-center gap-3 sm:flex-row sm:items-center sm:gap-4">
-            <a
-              href="#top"
-              onClick={(e) => {
-                e.preventDefault();
-                scrollToTop();
+            Mobile (default): flex-col, every cluster horizontally centered.
+            DOM order via CSS `order` utilities → logo on top, copyright in
+            the middle, back-to-top button at the bottom.
+            Desktop (md+):    CSS grid with three equal columns. The logo
+            sits dead-center in column 2 (justify-self-center), copyright
+            sits in column 1 left-aligned, button sits in column 3
+            right-aligned. The DOM order is logo → copyright → button on
+            mobile via order-* utilities; on desktop it becomes copyright →
+            logo → button via the order-* overrides at md. */}
+        <div className="flex flex-col items-center gap-6 border-t border-white/[0.08] pt-8 md:grid md:grid-cols-3 md:items-center md:gap-8">
+          {/* 1 — Logo (icon-only).
+                 Mobile: order-1 → first in the column.
+                 Desktop: order-2 → middle column, justify-self-center keeps
+                 it perfectly centered no matter how wide the side clusters
+                 grow. The logo also acts as a click-to-top affordance. */}
+          <a
+            href="#top"
+            onClick={(e) => {
+              e.preventDefault();
+              scrollToTop();
+            }}
+            aria-label="AkExo Studio — back to top"
+            className="order-1 md:order-2 group inline-flex md:justify-self-center"
+          >
+            <img
+              src="/logo-icon.png"
+              alt="AkExo Studio"
+              style={{
+                height: '40px',
+                width: 'auto',
+                objectFit: 'contain',
               }}
-              className="group inline-flex"
-              aria-label="AkExo Studio — back to top"
-            >
-              <img
-                src="/logo-full.png"
-                alt="AkExo Studio"
-                style={{
-                  height: '40px',
-                  width: 'auto',
-                  objectFit: 'contain',
-                }}
-                className="block group-hover:opacity-90 transition-opacity"
-              />
-            </a>
-            <span className="hidden sm:flex items-center gap-2 sm:pl-4 sm:border-l sm:border-white/[0.08]">
-              <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-coral opacity-70" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-coral" />
-              </span>
-              <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-bone/65">
-                Solo AI Dev Studio
-              </span>
-            </span>
-          </div>
+              className="block group-hover:opacity-90 transition-opacity"
+            />
+          </a>
 
           {/* 2 — Copyright + tagline.
-                 Mobile stacks them on two centered lines; desktop reflows
-                 onto a single row. The brand-name line uses MIXED CASE
-                 (no `uppercase` utility) so "AkExo Studio" reads exactly
-                 the way it should — the all-caps editorial treatment is
-                 only kept for the generic descriptor underneath. */}
-          <div className="flex flex-col items-center gap-1.5 md:flex-row md:flex-wrap md:items-center md:justify-center md:gap-x-4 md:gap-y-1">
+                 Mobile: order-2 → middle, centered.
+                 Desktop: order-1 → first column (left), left-aligned, with
+                 the two phrases reflowed onto one wrapping row.
+                 Brand-name line is mixed-case (no `uppercase`) so "AkExo
+                 Studio" reads exactly as it should; the generic descriptor
+                 underneath keeps the editorial all-caps treatment. */}
+          <div className="order-2 md:order-1 flex flex-col items-center gap-1 text-center md:items-start md:text-left md:flex-row md:flex-wrap md:gap-x-4 md:gap-y-1">
             <span className="font-mono text-[11px] tracking-tight text-bone/70">
               © {new Date().getFullYear()} AkExo Studio
             </span>
@@ -164,19 +160,18 @@ export default function Footer() {
             </span>
           </div>
 
-          {/* 3 — Back to top.
-              48x48 circular button with a violet halo that pulses via the
-              halo_pulse keyframe (see tailwind.config.js). Colors are set
-              with arbitrary-value bracket syntax so the build can't quietly
-              drop them if the opacity-modifier shorthand on a hex token
-              ever fails to resolve. Hover swaps the translucent fill for a
-              solid violet and bumps the scale by 10%. */}
+          {/* 3 — Back-to-top button.
+                 Mobile: order-3 → last in the column.
+                 Desktop: stays at order-3, justify-self-end pins it to the
+                 right edge of its grid cell. 48x48 violet halo button with
+                 a perpetual pulse via halo_pulse and a hover scale-110 +
+                 solid-violet fill swap. */}
           <button
             type="button"
             onClick={scrollToTop}
             aria-label="Back to top"
             title="Back to top"
-            className="group inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-[rgba(139,92,246,0.5)] bg-[rgba(139,92,246,0.2)] text-white transition-all duration-300 ease-out animate-halo_pulse hover:scale-110 hover:bg-[#8B5CF6] hover:border-[#8B5CF6] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(139,92,246,0.7)] focus-visible:ring-offset-2 focus-visible:ring-offset-ink"
+            className="order-3 md:justify-self-end group inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-[rgba(139,92,246,0.5)] bg-[rgba(139,92,246,0.2)] text-white transition-all duration-300 ease-out animate-halo_pulse hover:scale-110 hover:bg-[#8B5CF6] hover:border-[#8B5CF6] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(139,92,246,0.7)] focus-visible:ring-offset-2 focus-visible:ring-offset-ink"
           >
             <ArrowUp size={20} strokeWidth={2.25} />
           </button>
