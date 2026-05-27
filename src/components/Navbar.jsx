@@ -66,7 +66,7 @@ export default function Navbar() {
           : 'bg-transparent'
       }`}
     >
-      <div className="mx-auto flex max-w-7xl items-center justify-between gap-6 px-5 py-4 sm:px-8 lg:grid lg:grid-cols-[auto_1fr_auto] lg:px-12">
+      <div className="mx-auto flex max-w-7xl items-center justify-between gap-6 px-5 py-3 sm:px-8 lg:grid lg:grid-cols-[auto_1fr_auto] lg:px-12 min-h-[90px]">
         {/* Logo — full wordmark image from /public/logo-full.png. Already
             includes "studio" so no separate text label is needed. Fades in
             on mount. */}
@@ -83,7 +83,7 @@ export default function Navbar() {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
             className="block group-hover:opacity-90 transition-opacity"
-            style={{ height: '72px', width: 'auto', objectFit: 'contain' }}
+            style={{ height: '80px', width: 'auto', objectFit: 'contain' }}
           />
         </a>
 

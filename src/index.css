@@ -46,11 +46,11 @@ html {
 }
 
 /* Sections targeted by anchor links need an offset equal to the navbar's
-   fixed height (≈ 104px: py-4 + a 72px logo). Without this, the heading of
-   the destination section ends up hidden behind the navbar after a smooth
-   scroll. Applies to every nav target. */
+   fixed height (≈ 104px: py-3 + an 80px logo, with a 90px min-height floor).
+   Without this, the heading of the destination section ends up hidden behind
+   the navbar after a smooth scroll. Applies to every nav target. */
 section[id] {
-  scroll-margin-top: 96px;
+  scroll-margin-top: 112px;
 }
 
 html,
