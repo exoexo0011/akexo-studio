@@ -105,11 +105,11 @@ function Socials() {
               ease: [0.22, 1, 0.36, 1],
               delay: 0.55 + i * 0.08,
             }}
-            className={`group relative inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/[0.08] text-bone transition-all duration-300 ease-out hover:bg-white/[0.12] hover:scale-110 hover:shadow-[0_0_22px_rgba(139,92,246,0.55)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-400/70 ${
+            className={`group relative inline-flex h-8 w-8 items-center justify-center rounded-full bg-white/[0.08] text-bone transition-all duration-300 ease-out hover:bg-white/[0.12] hover:scale-110 hover:shadow-[0_0_22px_rgba(139,92,246,0.55)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-400/70 md:h-10 md:w-10 ${
               s.mobile ? '' : 'hidden lg:inline-flex'
             }`}
           >
-            <Icon style={{ width: 28, height: 28 }} />
+            <Icon className="h-[22px] w-[22px] md:h-7 md:w-7" />
           </motion.a>
         );
       })}
@@ -173,7 +173,7 @@ export default function Navbar() {
           : 'bg-transparent'
       }`}
     >
-      <div className="mx-auto flex max-w-7xl items-center justify-between gap-6 px-5 py-3 sm:px-8 lg:grid lg:grid-cols-[auto_1fr_auto] lg:px-12 min-h-[90px]">
+      <div className="mx-auto flex max-w-7xl items-center justify-between gap-6 px-4 py-2 md:px-8 md:py-3 lg:grid lg:grid-cols-[auto_1fr_auto] lg:px-12 min-h-[68px] md:min-h-[90px]">
         {/* Logo — full wordmark image from /public/logo-full.png. Already
             includes "studio" so no separate text label is needed. Fades in
             on mount. */}
@@ -189,8 +189,7 @@ export default function Navbar() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
-            className="block group-hover:opacity-90 transition-opacity"
-            style={{ height: '80px', width: 'auto', objectFit: 'contain' }}
+            className="block w-auto h-[52px] object-contain transition-opacity group-hover:opacity-90 md:h-[80px]"
           />
         </a>
 
