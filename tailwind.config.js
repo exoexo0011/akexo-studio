@@ -4,40 +4,46 @@ export default {
   theme: {
     extend: {
       colors: {
-        // "Bone & Vermilion" palette
-        // ink   = primary background (warm parchment cream)
-        // ink2  = alt background (deeper cream)
-        // bone  = primary text (warm near-black ink)
-        // matrix = single accent (vermilion / hunter orange)
-        ink: '#EFE6D2',
-        ink2: '#E5DAC0',
-        bone: '#0F0E0C',
+        // "Cobalt & Cream" v3 palette
+        // Token semantics preserved across redesigns:
+        //   ink   = primary background  (cream paper)
+        //   ink2  = lifted surface       (slightly lighter cream)
+        //   bone  = primary text         (deep cobalt — not black)
+        //   matrix = primary accent      (electric Klein cobalt)
+        //   coral  = rare warm accent    (status pulse only)
+        ink: '#F5F0E5',
+        ink2: '#FBF5EA',
+        bone: '#0E1E66',
+        mute: '#5C6892',
+        rule: '#D4CFC2',
         matrix: {
-          DEFAULT: '#E63B1E',
-          dim: '#B82A0F',
-          glow: 'rgba(230, 59, 30, 0.45)',
+          DEFAULT: '#0033FF',
+          dim: '#0028CC',
+          glow: 'rgba(0, 51, 255, 0.45)',
         },
+        coral: '#FF6B47',
       },
       fontFamily: {
-        display: ['Anton', 'Impact', 'sans-serif'],
-        body: ['"Bricolage Grotesque"', 'system-ui', 'sans-serif'],
+        display: ['"Fraunces"', '"Times New Roman"', 'serif'],
+        body: ['"Onest"', 'system-ui', 'sans-serif'],
         mono: ['"JetBrains Mono"', 'ui-monospace', 'monospace'],
       },
       letterSpacing: {
-        tightest: '-0.04em',
+        tightest: '-0.025em',
+        tighter: '-0.015em',
       },
       keyframes: {
         blink: {
           '0%, 100%': { opacity: '1' },
           '50%': { opacity: '0' },
         },
-        scan: {
-          '0%': { transform: 'translateY(-100%)' },
-          '100%': { transform: 'translateY(100vh)' },
+        spin_slow: {
+          '0%': { transform: 'rotate(0deg)' },
+          '100%': { transform: 'rotate(360deg)' },
         },
-        floatY: {
-          '0%, 100%': { transform: 'translateY(0)' },
-          '50%': { transform: 'translateY(-12px)' },
+        drift: {
+          '0%, 100%': { transform: 'translate(0, 0) scale(1)' },
+          '50%': { transform: 'translate(20px, -30px) scale(1.05)' },
         },
         marquee: {
           '0%': { transform: 'translateX(0)' },
@@ -46,15 +52,9 @@ export default {
       },
       animation: {
         blink: 'blink 1s steps(2, start) infinite',
-        scan: 'scan 8s linear infinite',
-        floatY: 'floatY 6s ease-in-out infinite',
-        marquee: 'marquee 40s linear infinite',
-      },
-      backgroundImage: {
-        'grid-fade':
-          'radial-gradient(ellipse at 50% 40%, rgba(230,59,30,0.14), transparent 65%)',
-        'paper-grain':
-          "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.06  0 0 0 0 0.055  0 0 0 0 0.05  0 0 0 0.18 0'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='0.55'/></svg>\")",
+        spin_slow: 'spin_slow 60s linear infinite',
+        drift: 'drift 14s ease-in-out infinite',
+        marquee: 'marquee 50s linear infinite',
       },
     },
   },

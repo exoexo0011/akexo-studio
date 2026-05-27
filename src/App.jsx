@@ -10,7 +10,7 @@ import Marquee from './components/Marquee.jsx';
 
 export default function App() {
   return (
-    <div className="relative min-h-screen overflow-x-hidden bg-ink text-bone scanlines">
+    <div className="relative min-h-screen overflow-x-hidden bg-ink text-bone">
       <Navbar />
       <main>
         <Hero />

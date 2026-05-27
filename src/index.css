@@ -12,145 +12,158 @@ html {
 
 html,
 body {
-  background: #efe6d2;
-  color: #0f0e0c;
-  font-family: 'Bricolage Grotesque', system-ui, sans-serif;
+  background: #f5f0e5;
+  color: #0e1e66;
+  font-family: 'Onest', system-ui, sans-serif;
+  font-feature-settings: 'ss01', 'ss02';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 ::selection {
-  background: #e63b1e;
-  color: #efe6d2;
+  background: #0033ff;
+  color: #f5f0e5;
 }
 
-/* slim, ink-on-paper scrollbar */
 ::-webkit-scrollbar {
   width: 10px;
   height: 10px;
 }
 ::-webkit-scrollbar-track {
-  background: #efe6d2;
+  background: #f5f0e5;
 }
 ::-webkit-scrollbar-thumb {
-  background: #c8bca0;
+  background: #d4cfc2;
   border-radius: 999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #e63b1e;
+  background: #0033ff;
 }
 
 @layer components {
-  /* "Glass" on a paper bg = a darker tinted card with a hairline ink rule.
-     Plus a faint top inset highlight to imply paper-on-paper depth. */
+  /* Editorial card surface — cream lifted on cream with a hairline cobalt-ink
+     border. Inset top-edge highlight + soft drop shadow give "paper on paper"
+     depth without using glassmorphism (glass on cream reads weak). */
   .glass {
-    background: linear-gradient(
-      180deg,
-      rgba(15, 14, 12, 0.045) 0%,
-      rgba(15, 14, 12, 0.015) 100%
-    );
-    border: 1px solid rgba(15, 14, 12, 0.12);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
+    background: #fbf5ea;
+    border: 1px solid rgba(14, 30, 102, 0.12);
     box-shadow:
-      0 1px 0 0 rgba(255, 255, 255, 0.55) inset,
-      0 12px 24px -18px rgba(15, 14, 12, 0.35);
+      0 1px 0 0 rgba(255, 255, 255, 0.7) inset,
+      0 16px 40px -28px rgba(14, 30, 102, 0.25);
     transition:
-      transform 0.25s ease,
-      box-shadow 0.25s ease,
-      border-color 0.25s ease;
+      transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+      border-color 0.3s cubic-bezier(0.22, 1, 0.36, 1);
   }
   .glass:hover {
-    border-color: rgba(15, 14, 12, 0.22);
+    border-color: rgba(0, 51, 255, 0.4);
     box-shadow:
-      0 1px 0 0 rgba(255, 255, 255, 0.6) inset,
-      6px 6px 0 0 rgba(230, 59, 30, 0.95);
+      0 1px 0 0 rgba(255, 255, 255, 0.7) inset,
+      8px 8px 0 0 #0033ff;
   }
+
   .glass-matrix {
     background: linear-gradient(
-      180deg,
-      rgba(230, 59, 30, 0.12) 0%,
-      rgba(230, 59, 30, 0.04) 100%
+      170deg,
+      rgba(0, 51, 255, 0.06) 0%,
+      rgba(0, 51, 255, 0.02) 100%
     );
-    border: 1px solid rgba(230, 59, 30, 0.55);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(0, 51, 255, 0.4);
     box-shadow:
-      0 1px 0 0 rgba(255, 255, 255, 0.55) inset,
-      0 16px 30px -20px rgba(230, 59, 30, 0.55);
+      0 1px 0 0 rgba(255, 255, 255, 0.6) inset,
+      0 24px 48px -24px rgba(0, 51, 255, 0.45);
     transition:
-      transform 0.25s ease,
-      box-shadow 0.25s ease,
-      border-color 0.25s ease;
+      transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow 0.3s cubic-bezier(0.22, 1, 0.36, 1);
   }
   .glass-matrix:hover {
     box-shadow:
-      0 1px 0 0 rgba(255, 255, 255, 0.55) inset,
-      6px 6px 0 0 rgba(15, 14, 12, 0.92);
+      0 1px 0 0 rgba(255, 255, 255, 0.6) inset,
+      8px 8px 0 0 #0e1e66;
   }
 
   .eyebrow {
-    @apply font-mono text-[11px] uppercase tracking-[0.3em] text-matrix;
+    @apply font-mono text-[11px] uppercase tracking-[0.28em] text-matrix;
   }
+
+  /* Display class for big serif headlines. Uses Fraunces optical sizing. */
   .display {
-    @apply font-display uppercase leading-[0.85] tracking-tightest;
+    font-family: 'Fraunces', 'Times New Roman', serif;
+    font-weight: 700;
+    line-height: 0.92;
+    letter-spacing: -0.025em;
+    font-variation-settings: 'opsz' 144, 'SOFT' 30;
+  }
+  .display-italic {
+    font-family: 'Fraunces', 'Times New Roman', serif;
+    font-style: italic;
+    font-weight: 400;
+    line-height: 0.92;
+    letter-spacing: -0.015em;
+    font-variation-settings: 'opsz' 144, 'SOFT' 100;
   }
 
   .btn-primary {
-    @apply inline-flex items-center gap-2 bg-matrix text-ink px-6 py-3 font-mono text-sm uppercase tracking-[0.18em] font-bold
-      hover:bg-bone hover:text-ink transition-colors duration-200 border border-matrix hover:border-bone;
+    @apply inline-flex items-center gap-2 bg-matrix text-ink px-7 py-3.5 font-mono text-[12px] uppercase tracking-[0.2em] font-bold
+      hover:bg-bone hover:text-ink transition-colors duration-200 border border-matrix hover:border-bone rounded-none;
   }
   .btn-ghost {
-    @apply inline-flex items-center gap-2 text-bone px-6 py-3 font-mono text-sm uppercase tracking-[0.18em] font-bold
-      hover:text-matrix transition-colors duration-200 border border-bone/25 hover:border-matrix;
+    @apply inline-flex items-center gap-2 text-bone px-7 py-3.5 font-mono text-[12px] uppercase tracking-[0.2em] font-bold
+      hover:text-matrix transition-colors duration-200 border border-bone/25 hover:border-matrix rounded-none;
   }
+
   .section-pad {
     @apply px-5 sm:px-8 lg:px-16 py-24 md:py-32;
   }
+
+  /* Editorial horizontal rule */
+  .rule-line {
+    height: 1px;
+    background: #0e1e66;
+    opacity: 0.18;
+  }
+  .rule-line-accent {
+    height: 1px;
+    background: #0033ff;
+    opacity: 0.35;
+  }
 }
 
-/* hairline underline that sweeps in on hover */
+/* Hairline sweep underline on hover for nav links */
+.sweep {
+  position: relative;
+}
 .sweep::after {
   content: '';
   display: block;
   width: 0;
   height: 1px;
-  background: #e63b1e;
-  transition: width 0.4s ease;
+  background: #0033ff;
+  transition: width 0.4s cubic-bezier(0.22, 1, 0.36, 1);
 }
 .sweep:hover::after {
   width: 100%;
 }
 
-/* faint ink-on-paper scanline texture — barely there, like newsprint */
-.scanlines {
-  background-image: repeating-linear-gradient(
-    0deg,
-    rgba(15, 14, 12, 0.025) 0px,
-    rgba(15, 14, 12, 0.025) 1px,
-    transparent 1px,
-    transparent 4px
-  );
+/* Subtle paper grain — almost invisible, just enough to break up flat color */
+.paper-grain {
+  background-image:
+    radial-gradient(
+      circle at 1px 1px,
+      rgba(14, 30, 102, 0.025) 1px,
+      transparent 0
+    );
+  background-size: 4px 4px;
 }
 
-/* perspective grid floor in vermilion — like a printed grid ruler */
-.grid-floor {
-  background-image:
-    linear-gradient(rgba(230, 59, 30, 0.22) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(230, 59, 30, 0.22) 1px, transparent 1px);
-  background-size: 60px 60px;
-  mask-image: linear-gradient(
-    to bottom,
-    transparent 0%,
-    black 30%,
-    black 70%,
-    transparent 100%
-  );
-  -webkit-mask-image: linear-gradient(
-    to bottom,
-    transparent 0%,
-    black 30%,
-    black 70%,
-    transparent 100%
-  );
+/* Honor reduced-motion preference (UI/UX Pro Max §1: reduced-motion) */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

@@ -1,130 +1,103 @@
-import { useEffect, useRef } from 'react';
+import { motion } from 'framer-motion';
 
 /**
- * Animated particle grid background.
- * - Subtle dot grid that pulses
- * - Floating particles drifting upward
- * - Mouse parallax that shifts the field slightly
+ * AmbientLayer — replaces the old ParticleGrid.
+ *
+ * Editorial direction: no particles, no halftones. Just three quiet decorative
+ * elements that breathe slowly and read as a magazine cover backdrop:
+ *   1. A huge cobalt circle outline, slowly rotating (decorative, like a
+ *      magazine cover sticker)
+ *   2. A soft drifting cobalt blob (low-opacity, gentle parallax)
+ *   3. Subtle paper grain across the whole field
+ *
+ * Component name kept as ParticleGrid.jsx to avoid a noisy import refactor;
+ * the default export is the new AmbientLayer.
  */
 export default function ParticleGrid() {
-  const canvasRef = useRef(null);
-  const mouseRef = useRef({ x: 0.5, y: 0.5 });
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    let raf;
-    let w = 0;
-    let h = 0;
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
-
-    const resize = () => {
-      w = canvas.clientWidth;
-      h = canvas.clientHeight;
-      canvas.width = w * dpr;
-      canvas.height = h * dpr;
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    };
-    resize();
-    window.addEventListener('resize', resize);
-
-    // Particle field
-    const COUNT = Math.min(70, Math.floor((w * h) / 22000));
-    const particles = Array.from({ length: COUNT }, () => ({
-      x: Math.random() * w,
-      y: Math.random() * h,
-      vx: (Math.random() - 0.5) * 0.15,
-      vy: -Math.random() * 0.35 - 0.05,
-      r: Math.random() * 1.6 + 0.4,
-      a: Math.random() * 0.6 + 0.2,
-    }));
-
-    const onMouse = (e) => {
-      mouseRef.current.x = e.clientX / window.innerWidth;
-      mouseRef.current.y = e.clientY / window.innerHeight;
-    };
-    window.addEventListener('mousemove', onMouse);
-
-    let t = 0;
-    const draw = () => {
-      t += 0.008;
-      ctx.clearRect(0, 0, w, h);
-
-      // dot grid — ink dots on paper, with a roving vermilion scan that
-      // tints nearby dots toward the accent (newsprint halftone feel)
-      const spacing = 42;
-      const ox = (mouseRef.current.x - 0.5) * 14;
-      const oy = (mouseRef.current.y - 0.5) * 14;
-      const cx = w * 0.5 + Math.cos(t) * w * 0.35;
-      const cy = h * 0.45 + Math.sin(t * 0.8) * h * 0.3;
-      for (let x = -spacing; x < w + spacing; x += spacing) {
-        for (let y = -spacing; y < h + spacing; y += spacing) {
-          const dx = x - cx;
-          const dy = y - cy;
-          const d = Math.sqrt(dx * dx + dy * dy);
-          const glow = Math.max(0, 1 - d / 260);
-          const r = 0.9 + glow * 1.6;
-          // base ink dot
-          const inkAlpha = 0.08 + (1 - glow) * 0.06;
-          ctx.fillStyle = `rgba(15, 14, 12, ${inkAlpha})`;
-          ctx.beginPath();
-          ctx.arc(x + ox, y + oy, r * 0.9, 0, Math.PI * 2);
-          ctx.fill();
-          // vermilion overlay near the scan — feels like spot-color print bleed
-          if (glow > 0.05) {
-            ctx.fillStyle = `rgba(230, 59, 30, ${glow * 0.85})`;
-            ctx.beginPath();
-            ctx.arc(x + ox, y + oy, r * (0.9 + glow * 0.7), 0, Math.PI * 2);
-            ctx.fill();
-          }
-        }
-      }
-
-      // floating particles — vermilion specks drifting up
-      for (const p of particles) {
-        p.x += p.vx;
-        p.y += p.vy;
-        if (p.y < -10) {
-          p.y = h + 10;
-          p.x = Math.random() * w;
-        }
-        if (p.x < -10) p.x = w + 10;
-        if (p.x > w + 10) p.x = -10;
-
-        ctx.fillStyle = `rgba(230, 59, 30, ${p.a * 0.85})`;
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fill();
-      }
-
-      raf = requestAnimationFrame(draw);
-    };
-    draw();
-
-    return () => {
-      cancelAnimationFrame(raf);
-      window.removeEventListener('resize', resize);
-      window.removeEventListener('mousemove', onMouse);
-    };
-  }, []);
-
   return (
     <div className="pointer-events-none absolute inset-0 overflow-hidden">
-      {/* radial fade backdrop */}
-      <div className="absolute inset-0 bg-grid-fade" />
-      {/* canvas particles */}
-      <canvas
-        ref={canvasRef}
-        className="absolute inset-0 h-full w-full"
-        aria-hidden="true"
+      {/* paper grain */}
+      <div className="absolute inset-0 paper-grain opacity-70" />
+
+      {/* drifting cobalt blob (bottom-right) */}
+      <motion.div
+        aria-hidden
+        animate={{
+          x: [0, 30, -10, 0],
+          y: [0, -20, 10, 0],
+          scale: [1, 1.08, 0.96, 1],
+        }}
+        transition={{ duration: 18, repeat: Infinity, ease: 'easeInOut' }}
+        className="absolute -right-32 -bottom-32 h-[42rem] w-[42rem] rounded-full opacity-50"
+        style={{
+          background:
+            'radial-gradient(circle, rgba(0,51,255,0.18) 0%, rgba(0,51,255,0.08) 35%, transparent 70%)',
+          filter: 'blur(2px)',
+        }}
       />
-      {/* faint scanline sweep */}
-      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-matrix/60 to-transparent animate-scan" />
-      {/* perspective floor at bottom */}
-      <div className="absolute inset-x-0 bottom-0 h-[55%] grid-floor opacity-40 [transform:perspective(800px)_rotateX(60deg)] origin-bottom" />
-      {/* deep vignette — fades into the parchment background */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_28%,rgba(239,230,210,0.92)_88%)]" />
+
+      {/* secondary blob (top-left) */}
+      <motion.div
+        aria-hidden
+        animate={{
+          x: [0, -20, 10, 0],
+          y: [0, 25, -15, 0],
+        }}
+        transition={{ duration: 22, repeat: Infinity, ease: 'easeInOut' }}
+        className="absolute -left-40 -top-40 h-[34rem] w-[34rem] rounded-full opacity-40"
+        style={{
+          background:
+            'radial-gradient(circle, rgba(255,107,71,0.12) 0%, transparent 65%)',
+          filter: 'blur(8px)',
+        }}
+      />
+
+      {/* big rotating cobalt ring — magazine cover stamp */}
+      <motion.svg
+        aria-hidden
+        animate={{ rotate: 360 }}
+        transition={{ duration: 80, repeat: Infinity, ease: 'linear' }}
+        className="absolute -right-24 top-20 h-[28rem] w-[28rem] opacity-25 hidden md:block"
+        viewBox="0 0 400 400"
+      >
+        <defs>
+          <path
+            id="ring-text"
+            d="M 200, 200 m -160, 0 a 160,160 0 1,1 320,0 a 160,160 0 1,1 -320,0"
+          />
+        </defs>
+        <circle
+          cx="200"
+          cy="200"
+          r="160"
+          stroke="#0033FF"
+          strokeWidth="1"
+          fill="none"
+        />
+        <circle
+          cx="200"
+          cy="200"
+          r="120"
+          stroke="#0033FF"
+          strokeWidth="1"
+          fill="none"
+          strokeDasharray="2 6"
+        />
+        <text
+          fill="#0033FF"
+          fontFamily="JetBrains Mono, monospace"
+          fontSize="13"
+          letterSpacing="6"
+        >
+          <textPath href="#ring-text" startOffset="0">
+            AKEXO · SOLO STUDIO · EST. 2024 · BUILDING WITH AI · AKEXO ·
+            SOLO STUDIO · EST. 2024 ·{' '}
+          </textPath>
+        </text>
+      </motion.svg>
+
+      {/* edge fade so the hero handoff feels seamless */}
+      <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-b from-transparent to-ink" />
     </div>
   );
 }
