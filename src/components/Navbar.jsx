@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, ArrowRight } from 'lucide-react';
 
@@ -266,126 +267,139 @@ export default function Navbar() {
         </div>
       </div>
 
-      <AnimatePresence>
-        {open && (
-          <motion.div
-            id="mobile-menu"
-            key="mobile-overlay"
-            role="dialog"
-            aria-modal="true"
-            aria-label="Site navigation"
-            initial={{ x: '100%' }}
-            animate={{ x: 0 }}
-            exit={{ x: '100%' }}
-            transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-            className="lg:hidden"
-            style={{
-              /* Forced to fully opaque black so NOTHING bleeds through:
-                 - position: fixed + all-side 0 anchors the panel to the
-                   viewport instead of any transformed ancestor (the
-                   navbar header itself can become a containing block
-                   once framer-motion leaves a transform on it).
-                 - backgroundColor uses a solid hex (no rgba/opacity) so
-                   the page content behind cannot be perceived at all.
-                 - z-index 9999 places it above every other layer in
-                   the app, including the fixed hero <video> background.
-                 - backdrop-filter is intentionally absent — any blur
-                   effect requires translucency to be visible, which is
-                   precisely what we don't want here.
-                 - isolation: isolate creates a fresh stacking context
-                   so no parent's opacity/filter can dim this layer. */
-              position: 'fixed',
-              top: 0,
-              left: 0,
-              right: 0,
-              bottom: 0,
-              backgroundColor: '#000000',
-              zIndex: 9999,
-              isolation: 'isolate',
-            }}
-          >
-            {/* Subtle violet/pink atmosphere accent — soft radial blob in
-                the upper-right that catches the eye without competing with
-                the link list. Pure decoration, never receives pointer events. */}
-            <div
-              aria-hidden="true"
-              className="pointer-events-none absolute -right-32 -top-32 h-[460px] w-[460px] rounded-full opacity-90"
-              style={{
-                background:
-                  'radial-gradient(closest-side, rgba(139,92,246,0.40) 0%, rgba(236,72,153,0.18) 45%, transparent 75%)',
-                filter: 'blur(8px)',
-              }}
-            />
-            <div
-              aria-hidden="true"
-              className="pointer-events-none absolute -bottom-40 -left-32 h-[380px] w-[380px] rounded-full opacity-70"
-              style={{
-                background:
-                  'radial-gradient(closest-side, rgba(99,102,241,0.32) 0%, transparent 70%)',
-                filter: 'blur(8px)',
-              }}
-            />
-
-            {/* Close button — large enough for thumb, top-right anchor */}
-            <button
-              onClick={() => setOpen(false)}
-              aria-label="Close menu"
-              className="absolute right-5 top-5 z-10 inline-flex h-12 w-12 items-center justify-center rounded-full border border-white/[0.08] bg-white/[0.06] text-bone backdrop-blur transition-all duration-300 hover:border-violet-400/40 hover:bg-white/[0.12] hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-400/70"
-            >
-              <X size={26} strokeWidth={1.75} />
-            </button>
-
-            {/* Content stack — links pinned to the top with generous breathing
-                room, CTA pinned to the bottom. flex-1 spacer in between
-                pushes the CTA down regardless of how many links exist. */}
-            <div className="relative flex h-full flex-col px-6 pt-24 pb-10 sm:px-10">
-              <nav className="flex flex-col">
-                {links.map((l, i) => (
-                  <motion.a
-                    key={l.href}
-                    href={l.href}
-                    onClick={(e) => handleNavClick(e, l.href)}
-                    initial={{ opacity: 0, x: 32 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{
-                      delay: 0.18 + i * 0.06,
-                      duration: 0.42,
-                      ease: [0.22, 1, 0.36, 1],
-                    }}
-                    className="group flex items-center justify-between border-b border-white/[0.10] py-5 text-bone transition-colors duration-300 hover:text-violet-300"
-                  >
-                    <span
-                      className="display font-medium"
-                      style={{ fontSize: 32, lineHeight: 1 }}
-                    >
-                      {l.label}
-                    </span>
-                    <ArrowRight
-                      size={22}
-                      className="text-bone/40 transition-all duration-300 ease-out group-hover:translate-x-1 group-hover:text-violet-300"
-                    />
-                  </motion.a>
-                ))}
-              </nav>
-
-              <div className="flex-1" />
-
-              {/* Primary CTA — full-width gradient pill at the bottom edge */}
-              <motion.a
-                href="#contact"
-                onClick={(e) => handleNavClick(e, '#contact')}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.55, duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-                className="btn-primary w-full justify-center !py-4 !text-[15px]"
+      {/* === Mobile menu — portaled to <body> ===
+          Rendering through createPortal escapes every ancestor stacking
+          context. The navbar header is a framer-motion element, and once
+          framer leaves a `transform` on it (post-entrance), any
+          `position: fixed` descendant becomes positioned relative to
+          that transformed ancestor instead of the viewport — which is
+          exactly what was bleeding the page through the overlay before.
+          Portaling to document.body makes the overlay a top-level child
+          of <body>, with no transformed/opacity ancestor between it and
+          the viewport, so `position: fixed` truly covers the screen. */}
+      {typeof document !== 'undefined' &&
+        createPortal(
+          <AnimatePresence>
+            {open && (
+              <motion.div
+                id="mobile-menu"
+                key="mobile-overlay"
+                role="dialog"
+                aria-modal="true"
+                aria-label="Site navigation"
+                initial={{ x: '100%' }}
+                animate={{ x: 0 }}
+                exit={{ x: '100%' }}
+                transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+                className="lg:hidden"
+                style={{
+                  /* Forced to fully opaque black so NOTHING bleeds
+                     through. See list of guarantees:
+                     - position: fixed + all-side 0 anchors the panel to
+                       the viewport. Because we're now portaled to
+                       <body>, there's no transformed ancestor that
+                       could ever capture `fixed`.
+                     - backgroundColor uses a solid hex (no rgba/alpha)
+                       so the page content behind cannot be perceived.
+                     - z-index 9999 places it above every other layer.
+                     - backdrop-filter is intentionally absent — any
+                       blur effect requires translucency to be visible.
+                     - isolation: isolate creates a fresh stacking
+                       context as belt-and-braces protection. */
+                  position: 'fixed',
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  backgroundColor: '#000000',
+                  zIndex: 9999,
+                  isolation: 'isolate',
+                }}
               >
-                Book the call
-                <ArrowRight size={18} />
-              </motion.a>
-            </div>
-          </motion.div>
+                {/* Subtle violet/pink atmosphere accent — soft radial blob in
+                    the upper-right that catches the eye without competing with
+                    the link list. Pure decoration, never receives pointer events. */}
+                <div
+                  aria-hidden="true"
+                  className="pointer-events-none absolute -right-32 -top-32 h-[460px] w-[460px] rounded-full opacity-90"
+                  style={{
+                    background:
+                      'radial-gradient(closest-side, rgba(139,92,246,0.40) 0%, rgba(236,72,153,0.18) 45%, transparent 75%)',
+                    filter: 'blur(8px)',
+                  }}
+                />
+                <div
+                  aria-hidden="true"
+                  className="pointer-events-none absolute -bottom-40 -left-32 h-[380px] w-[380px] rounded-full opacity-70"
+                  style={{
+                    background:
+                      'radial-gradient(closest-side, rgba(99,102,241,0.32) 0%, transparent 70%)',
+                    filter: 'blur(8px)',
+                  }}
+                />
+
+                {/* Close button — large enough for thumb, top-right anchor */}
+                <button
+                  onClick={() => setOpen(false)}
+                  aria-label="Close menu"
+                  className="absolute right-5 top-5 z-10 inline-flex h-12 w-12 items-center justify-center rounded-full border border-white/[0.08] bg-white/[0.06] text-bone backdrop-blur transition-all duration-300 hover:border-violet-400/40 hover:bg-white/[0.12] hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-400/70"
+                >
+                  <X size={26} strokeWidth={1.75} />
+                </button>
+
+                {/* Content stack — links pinned to the top with generous breathing
+                    room, CTA pinned to the bottom. flex-1 spacer in between
+                    pushes the CTA down regardless of how many links exist. */}
+                <div className="relative flex h-full flex-col px-6 pt-24 pb-10 sm:px-10">
+                  <nav className="flex flex-col">
+                    {links.map((l, i) => (
+                      <motion.a
+                        key={l.href}
+                        href={l.href}
+                        onClick={(e) => handleNavClick(e, l.href)}
+                        initial={{ opacity: 0, x: 32 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{
+                          delay: 0.18 + i * 0.06,
+                          duration: 0.42,
+                          ease: [0.22, 1, 0.36, 1],
+                        }}
+                        className="group flex items-center justify-between border-b border-white/[0.10] py-5 text-bone transition-colors duration-300 hover:text-violet-300"
+                      >
+                        <span
+                          className="display font-medium"
+                          style={{ fontSize: 32, lineHeight: 1 }}
+                        >
+                          {l.label}
+                        </span>
+                        <ArrowRight
+                          size={22}
+                          className="text-bone/40 transition-all duration-300 ease-out group-hover:translate-x-1 group-hover:text-violet-300"
+                        />
+                      </motion.a>
+                    ))}
+                  </nav>
+
+                  <div className="flex-1" />
+
+                  {/* Primary CTA — full-width gradient pill at the bottom edge */}
+                  <motion.a
+                    href="#contact"
+                    onClick={(e) => handleNavClick(e, '#contact')}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.55, duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+                    className="btn-primary w-full justify-center !py-4 !text-[15px]"
+                  >
+                    Book the call
+                    <ArrowRight size={18} />
+                  </motion.a>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>,
+          document.body
         )}
-      </AnimatePresence>
     </motion.header>
   );
 }
