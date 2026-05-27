@@ -29,6 +29,16 @@ const projects = [
     status: 'Live',
     metric: 'v1 — Live',
   },
+  {
+    code: 'PRJ_003',
+    title: 'EXO Labs',
+    blurb:
+      'Personal lab and experiments page — a collection of AI builds, tools, and projects by AkExo.',
+    tags: ['HTML', 'CSS', 'JavaScript', 'GitHub Pages'],
+    live: 'https://exoexo0011.github.io/EXO-LABS',
+    status: 'Live',
+    metric: 'Open Lab',
+  },
 ];
 
 /* Stagger fade-up. Each card receives `custom={i}` so its delay is
@@ -59,11 +69,10 @@ export default function Projects() {
           sub="Two real, live projects. Each one designed, coded, and deployed end-to-end. No mockups, no agency layer — every link below is a working production URL."
         />
 
-        {/* 2-up grid on md+, stacked on mobile. gap-6 keeps the cards from
-            feeling glued together while staying visually linked. The
-            grid intentionally has only two children today — adding a
-            third project simply pushes the layout to a 3-up at lg+. */}
-        <div className="grid gap-6 md:grid-cols-2">
+        {/* Responsive grid: 1-up on mobile, 2-up on md, 3-up on lg+. With
+            three projects, the lg breakpoint lays them out as a single
+            even row — no orphaned card on a second row. */}
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {projects.map((p, i) => (
             <motion.article
               key={p.title}
