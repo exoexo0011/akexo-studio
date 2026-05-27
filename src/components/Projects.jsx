@@ -1,65 +1,51 @@
 import { motion } from 'framer-motion';
-import { ArrowUpRight, Lock } from 'lucide-react';
+import { ArrowUpRight, Github } from 'lucide-react';
 import SectionHeader from './SectionHeader.jsx';
 
+/* === Project registry ===
+   Real, shipped work only. Each entry drives one card. The order here is
+   the visual order on screen (top-left → top-right on md+, top → bottom on
+   mobile). `code` is the editorial PRJ_NNN tag in the corner — kept zero-
+   padded for the magazine feel; bump it when adding a third entry.
+   `live` and `github` are mandatory and always open in a new tab. */
 const projects = [
   {
     code: 'PRJ_001',
     title: 'AI Content Creator',
     blurb:
-      'A four-agent pipeline. It scrapes viral posts, scores them on engagement, drafts the reel script, and gives you five hook options. One command, sixty seconds.',
-    tags: ['Claude', 'React', 'N8N', 'Tailwind'],
-    href: 'https://github.com/exoexo0011',
+      '4-agent AI pipeline that generates viral scripts, hooks, and a full week of content from one topic.',
+    tags: ['React', 'Vite', 'NVIDIA NIM', 'Llama 4'],
+    live: 'https://ai-content-creator-jade.vercel.app',
+    github: 'https://github.com/exoexo0011/ai-content-creator',
     status: 'Live',
-    accent: true,
-    metric: '4-agent / 60s',
+    metric: '4 agents',
   },
   {
     code: 'PRJ_002',
-    title: 'Founder Site System',
+    title: 'AkExo Studio',
     blurb:
-      'Landing pages for AI startups. Next.js on the Vercel edge, animated with Framer Motion, A/B tests pre-wired. I deliver them with analytics and a live preview link in 72 hours.',
-    tags: ['Next.js', 'Framer Motion', 'Vercel'],
-    href: '#contact',
+      'Personal AI dev studio website with scroll video hero, live visitor counter, and premium dark UI.',
+    tags: ['React', 'Vite', 'Tailwind', 'Framer Motion'],
+    live: 'https://akexo-studio.vercel.app',
+    github: 'https://github.com/exoexo0011/akexo-studio',
     status: 'Live',
-    metric: 'Ship in 72h',
-  },
-  {
-    code: 'PRJ_003',
-    title: 'AutoFlow Agent',
-    blurb:
-      'An ops agent that reads your Slack and Gmail, drafts replies, opens Linear tickets, and emails a summary every morning at 8.',
-    tags: ['OpenAI', 'Node', 'Postgres'],
-    href: '#contact',
-    status: 'Beta',
-    metric: 'Daily 8am',
-  },
-  {
-    code: 'PRJ_004',
-    title: 'Client Portal App',
-    blurb:
-      'A React Native app for client onboarding. Stripe billing, push notifications, and a chat that talks to your project bot. I push it to TestFlight in 14 days.',
-    tags: ['React Native', 'Expo', 'Stripe'],
-    href: '#contact',
-    status: 'Soon',
-    locked: true,
-    metric: '14-day TestFlight',
+    metric: 'v1 — Live',
   },
 ];
 
+/* Stagger fade-up. Each card receives `custom={i}` so its delay is
+   computed independently — looks like a deck being dealt as the section
+   scrolls into view. */
 const cardVariants = {
   hidden: { y: 32, opacity: 0 },
   visible: (i) => ({
     y: 0,
     opacity: 1,
-    transition: { delay: i * 0.1, duration: 0.7, ease: [0.22, 1, 0.36, 1] },
+    transition: { delay: i * 0.12, duration: 0.7, ease: [0.22, 1, 0.36, 1] },
   }),
 };
 
 export default function Projects() {
-  const featured = projects[0];
-  const rest = projects.slice(1);
-
   return (
     <section id="work" className="relative section-pad">
       <div className="mx-auto max-w-7xl">
@@ -72,142 +58,114 @@ export default function Projects() {
               <span className="display-italic text-matrix">shipped</span>.
             </>
           }
-          sub="A short list. I built each one end-to-end: design, code, AI, deploy. Most went live in under three weeks."
+          sub="Two real, live projects. Each one designed, coded, and deployed end-to-end. No mockups, no agency layer — every link below is a working production URL."
         />
 
-        {/* Featured editorial issue */}
-        <motion.a
-          href={featured.href}
-          target={featured.href.startsWith('http') ? '_blank' : undefined}
-          rel={featured.href.startsWith('http') ? 'noreferrer noopener' : undefined}
-          variants={cardVariants}
-          custom={0}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: '-80px' }}
-          whileHover={{ y: -6 }}
-          className="glass-matrix group relative block overflow-hidden p-8 md:p-12 mb-5"
-        >
-          <div className="grid gap-8 md:grid-cols-[1.5fr_1fr] md:gap-16 items-end">
-            <div>
-              <div className="flex items-center gap-3 mb-6">
-                <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-matrix">
-                  {featured.code}
-                </span>
-                <span className="h-px w-8 bg-matrix/40" />
-                <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-coral flex items-center gap-1.5">
-                  <span className="relative flex h-1.5 w-1.5">
-                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-coral opacity-70" />
-                    <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-coral" />
-                  </span>
-                  {featured.status}
-                </span>
-                <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-bone/45">
-                  Featured
-                </span>
-              </div>
-              <h3 className="display text-bone text-5xl md:text-7xl mb-4 leading-[0.92]">
-                {featured.title}
-              </h3>
-              <p className="font-body text-bone/75 text-base md:text-lg leading-relaxed max-w-xl mb-6">
-                {featured.blurb}
-              </p>
-              <div className="flex flex-wrap gap-2">
-                {featured.tags.map((t) => (
-                  <span
-                    key={t}
-                    className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.2em] text-bone/70 backdrop-blur-sm"
-                  >
-                    {t}
-                  </span>
-                ))}
-              </div>
-            </div>
-
-            <div className="flex flex-col gap-6 items-start md:items-end">
-              <div className="display-italic text-matrix text-5xl md:text-6xl">
-                {featured.metric}
-              </div>
-              <div className="flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.22em] text-matrix group-hover:text-bone transition-colors">
-                Open repo
-                <ArrowUpRight
-                  size={18}
-                  className="transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
-                />
-              </div>
-            </div>
-          </div>
-        </motion.a>
-
-        {/* The rest as 3-up grid */}
-        <div className="grid gap-5 md:grid-cols-3">
-          {rest.map((p, i) => (
-            <motion.a
+        {/* 2-up grid on md+, stacked on mobile. gap-6 keeps the cards from
+            feeling glued together while staying visually linked. The
+            grid intentionally has only two children today — adding a
+            third project simply pushes the layout to a 3-up at lg+. */}
+        <div className="grid gap-6 md:grid-cols-2">
+          {projects.map((p, i) => (
+            <motion.article
               key={p.title}
-              href={p.href}
-              target={p.href.startsWith('http') ? '_blank' : undefined}
-              rel={p.href.startsWith('http') ? 'noreferrer noopener' : undefined}
-              custom={i + 1}
+              custom={i}
               variants={cardVariants}
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, margin: '-80px' }}
               whileHover={{ y: -6 }}
-              className="glass group relative block overflow-hidden p-7 flex flex-col gap-5"
+              className="glass-matrix group relative flex flex-col gap-5 overflow-hidden p-7 md:p-9"
             >
-              <div className="flex items-start justify-between">
-                <div className="flex items-center gap-2">
+              {/* === Header row ===
+                  Left cluster: editorial code tag + thin divider + status
+                  ping. The status uses the same coral pulse pattern as
+                  every other "Live" indicator on the site so it reads
+                  consistently across sections.
+                  Right cluster: GitHub icon button. Sits in the corner
+                  like a secondary action; the primary CTA lives at the
+                  bottom of the card. */}
+              <div className="flex items-start justify-between gap-3">
+                <div className="flex items-center gap-3">
                   <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-matrix">
                     {p.code}
                   </span>
-                  <span className="h-px w-4 bg-bone/20" />
-                  <span
-                    className={`font-mono text-[10px] uppercase tracking-[0.25em] flex items-center gap-1 ${
-                      p.status === 'Live'
-                        ? 'text-coral'
-                        : p.status === 'Beta'
-                          ? 'text-bone/65'
-                          : 'text-bone/40'
-                    }`}
-                  >
-                    {p.status === 'Live' && (
-                      <span className="relative flex h-1.5 w-1.5">
-                        <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-coral opacity-70" />
-                        <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-coral" />
-                      </span>
-                    )}
+                  <span className="h-px w-6 bg-matrix/40" />
+                  <span className="font-mono text-[10px] uppercase tracking-[0.25em] flex items-center gap-1.5 text-coral">
+                    <span className="relative flex h-1.5 w-1.5">
+                      <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-coral opacity-70" />
+                      <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-coral" />
+                    </span>
                     {p.status}
                   </span>
                 </div>
-                <div className="text-bone/40 group-hover:text-matrix transition-colors">
-                  {p.locked ? <Lock size={16} /> : <ArrowUpRight size={18} />}
-                </div>
+
+                <a
+                  href={p.github}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  aria-label={`${p.title} — GitHub repository`}
+                  className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/[0.10] bg-white/[0.04] text-bone/75 transition-all duration-300 ease-out hover:scale-105 hover:border-matrix/50 hover:bg-white/[0.10] hover:text-bone focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-400/70"
+                >
+                  <Github size={16} strokeWidth={2} />
+                </a>
               </div>
 
+              {/* === Title & blurb ===
+                  Title uses the display face with a slightly tighter scale
+                  than the hero. flex-1 on the blurb's wrapper ensures both
+                  cards in a row stay the same height even when one blurb
+                  is longer than the other. */}
               <h3 className="display text-bone text-3xl md:text-4xl">
                 {p.title}
               </h3>
 
-              <p className="font-body text-sm text-bone/70 leading-relaxed flex-1">
+              <p className="font-body text-[15px] leading-relaxed text-bone/75 flex-1">
                 {p.blurb}
               </p>
 
-              <div className="flex items-baseline justify-between border-t border-white/[0.08] pt-4">
-                <div className="flex flex-wrap gap-1.5">
-                  {p.tags.map((t) => (
-                    <span
-                      key={t}
-                      className="font-mono text-[9px] uppercase tracking-[0.18em] text-bone/55"
-                    >
-                      {t}
-                    </span>
-                  ))}
-                </div>
-                <span className="display-italic text-matrix text-sm">
+              {/* === Tags ===
+                  Pill-shaped, bordered, mono caps. They sit above the
+                  divider rule so the eye groups them with the description
+                  rather than the action row below. */}
+              <div className="flex flex-wrap gap-1.5">
+                {p.tags.map((t) => (
+                  <span
+                    key={t}
+                    className="rounded-full border border-white/[0.10] bg-white/[0.04] px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.2em] text-bone/70 backdrop-blur-sm"
+                  >
+                    {t}
+                  </span>
+                ))}
+              </div>
+
+              {/* === Action row ===
+                  Top divider rule visually separates "what it is" (above)
+                  from "where to go" (below). View Live is the primary
+                  CTA — gradient pill, full visual weight. Metric sits to
+                  the right in the brand gradient italic, echoing the
+                  other accent figures across the site. */}
+              <div className="flex items-center justify-between gap-3 border-t border-white/[0.08] pt-5">
+                <a
+                  href={p.live}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  className="btn-primary !px-5 !py-2.5 !text-[13px]"
+                  aria-label={`${p.title} — open live site`}
+                >
+                  View Live
+                  <ArrowUpRight
+                    size={15}
+                    strokeWidth={2.25}
+                    className="transition-transform duration-300 ease-out group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+                  />
+                </a>
+
+                <span className="display-italic text-base md:text-lg">
                   {p.metric}
                 </span>
               </div>
-            </motion.a>
+            </motion.article>
           ))}
         </div>
       </div>
