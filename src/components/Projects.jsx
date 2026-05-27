@@ -61,7 +61,7 @@ export default function Projects() {
   const rest = projects.slice(1);
 
   return (
-    <section id="projects" className="relative section-pad bg-ink2">
+    <section id="projects" className="relative section-pad">
       <div className="mx-auto max-w-7xl">
         <SectionHeader
           index="02"
@@ -116,7 +116,7 @@ export default function Projects() {
                 {featured.tags.map((t) => (
                   <span
                     key={t}
-                    className="border border-bone/15 bg-ink/40 px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.2em] text-bone/65"
+                    className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.2em] text-bone/70 backdrop-blur-sm"
                   >
                     {t}
                   </span>
@@ -192,7 +192,7 @@ export default function Projects() {
                 {p.blurb}
               </p>
 
-              <div className="flex items-baseline justify-between border-t border-bone/12 pt-4">
+              <div className="flex items-baseline justify-between border-t border-white/[0.08] pt-4">
                 <div className="flex flex-wrap gap-1.5">
                   {p.tags.map((t) => (
                     <span

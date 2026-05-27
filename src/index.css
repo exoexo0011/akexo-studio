@@ -2,8 +2,43 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ============================================================
+   AKEXO — "Aurora Noir" v4
+   Kling.ai-inspired dark UI: near-black canvas, white type, smooth
+   violet → indigo → pink gradient accents, glass cards, generous space.
+   No serifs. No cream. No cobalt.
+   ============================================================ */
+
 :root {
-  color-scheme: light;
+  color-scheme: dark;
+
+  /* Surface */
+  --bg-1: #050507;
+  --bg-2: #0B0B14;
+  --bg-3: #14141F;
+
+  /* Text */
+  --text-1: #FFFFFF;
+  --text-2: #A4A4B5;
+  --text-3: #6B6B7A;
+
+  /* Lines */
+  --border-soft: rgba(255, 255, 255, 0.08);
+  --border-mid: rgba(255, 255, 255, 0.14);
+  --border-strong: rgba(255, 255, 255, 0.22);
+
+  /* Brand */
+  --violet: #8B5CF6;
+  --violet-light: #A78BFA;
+  --indigo: #6366F1;
+  --blue: #3B82F6;
+  --pink: #EC4899;
+  --rose: #F472B6;
+
+  --gradient-brand:
+    linear-gradient(120deg, #8B5CF6 0%, #6366F1 35%, #EC4899 75%, #F472B6 100%);
+  --gradient-brand-soft:
+    linear-gradient(120deg, rgba(139, 92, 246, 0.85) 0%, rgba(99, 102, 241, 0.85) 50%, rgba(236, 72, 153, 0.85) 100%);
 }
 
 html {
@@ -12,124 +47,238 @@ html {
 
 html,
 body {
-  background: #f5f0e5;
-  color: #0e1e66;
-  font-family: 'Onest', system-ui, sans-serif;
+  background: var(--bg-1);
+  color: var(--text-1);
+  font-family: 'Manrope', system-ui, -apple-system, sans-serif;
   font-feature-settings: 'ss01', 'ss02';
+  font-weight: 400;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 ::selection {
-  background: #0033ff;
-  color: #f5f0e5;
+  background: rgba(139, 92, 246, 0.45);
+  color: #FFFFFF;
 }
 
+/* Scrollbar — slim, dark, subtle gradient on hover */
 ::-webkit-scrollbar {
   width: 10px;
   height: 10px;
 }
 ::-webkit-scrollbar-track {
-  background: #f5f0e5;
+  background: var(--bg-1);
 }
 ::-webkit-scrollbar-thumb {
-  background: #d4cfc2;
+  background: rgba(255, 255, 255, 0.08);
   border-radius: 999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #0033ff;
+  background: linear-gradient(180deg, #8B5CF6 0%, #EC4899 100%);
 }
 
 @layer components {
-  /* Editorial card surface — cream lifted on cream with a hairline cobalt-ink
-     border. Inset top-edge highlight + soft drop shadow give "paper on paper"
-     depth without using glassmorphism (glass on cream reads weak). */
+  /* === Display heading: bold geometric sans, tight ===
+     Replaces the old Fraunces serif. Bricolage Grotesque is variable so it
+     can stay sharp at huge display sizes via optical-size tuning. */
+  .display {
+    font-family: 'Bricolage Grotesque', system-ui, sans-serif;
+    font-weight: 700;
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+    font-variation-settings: 'opsz' 96, 'wdth' 100;
+  }
+
+  /* === Gradient accent text ===
+     This class kept its old name (display-italic) so existing markup keeps
+     working — but it no longer means "italic serif". It now paints the
+     glyphs with the brand gradient via background-clip. The text-matrix
+     class often layered on top is a safe fallback color for engines that
+     don't support -webkit-text-fill-color. */
+  .display-italic {
+    font-family: 'Bricolage Grotesque', system-ui, sans-serif;
+    font-weight: 700;
+    font-style: normal;
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+    font-variation-settings: 'opsz' 96, 'wdth' 100;
+    background-image: linear-gradient(
+      120deg,
+      #C4B5FD 0%,
+      #8B5CF6 22%,
+      #6366F1 48%,
+      #EC4899 78%,
+      #F9A8D4 100%
+    );
+    background-size: 200% 100%;
+    background-position: 0% 50%;
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    animation: gradient_shift 12s ease-in-out infinite;
+  }
+
+  /* === Glass card: subtle white tint, soft border, blurred ===
+     Hover lifts the tint, brightens the border to a soft violet, and adds
+     a wide low-opacity violet glow underneath. */
   .glass {
-    background: #fbf5ea;
-    border: 1px solid rgba(14, 30, 102, 0.12);
-    box-shadow:
-      0 1px 0 0 rgba(255, 255, 255, 0.7) inset,
-      0 16px 40px -28px rgba(14, 30, 102, 0.25);
+    position: relative;
+    background:
+      linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.045) 0%,
+        rgba(255, 255, 255, 0.015) 100%
+      );
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 24px;
+    backdrop-filter: blur(20px) saturate(140%);
+    -webkit-backdrop-filter: blur(20px) saturate(140%);
     transition:
-      transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
-      box-shadow 0.3s cubic-bezier(0.22, 1, 0.36, 1),
-      border-color 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+      transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+      border-color 0.45s,
+      background 0.45s,
+      box-shadow 0.45s;
   }
   .glass:hover {
-    border-color: rgba(0, 51, 255, 0.4);
-    box-shadow:
-      0 1px 0 0 rgba(255, 255, 255, 0.7) inset,
-      8px 8px 0 0 #0033ff;
+    background:
+      linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.075) 0%,
+        rgba(255, 255, 255, 0.025) 100%
+      );
+    border-color: rgba(167, 139, 250, 0.35);
+    box-shadow: 0 24px 80px -28px rgba(139, 92, 246, 0.45);
   }
 
+  /* === Glass card — featured: brand-tinted glass, gradient border feel === */
   .glass-matrix {
-    background: linear-gradient(
-      170deg,
-      rgba(0, 51, 255, 0.06) 0%,
-      rgba(0, 51, 255, 0.02) 100%
-    );
-    border: 1px solid rgba(0, 51, 255, 0.4);
+    position: relative;
+    background:
+      linear-gradient(
+        135deg,
+        rgba(139, 92, 246, 0.12) 0%,
+        rgba(99, 102, 241, 0.06) 50%,
+        rgba(236, 72, 153, 0.10) 100%
+      );
+    border: 1px solid rgba(139, 92, 246, 0.32);
+    border-radius: 24px;
+    backdrop-filter: blur(24px) saturate(140%);
+    -webkit-backdrop-filter: blur(24px) saturate(140%);
     box-shadow:
-      0 1px 0 0 rgba(255, 255, 255, 0.6) inset,
-      0 24px 48px -24px rgba(0, 51, 255, 0.45);
+      0 1px 0 0 rgba(255, 255, 255, 0.06) inset,
+      0 32px 80px -28px rgba(139, 92, 246, 0.45);
     transition:
-      transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
-      box-shadow 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+      transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+      border-color 0.45s,
+      box-shadow 0.45s;
   }
   .glass-matrix:hover {
+    border-color: rgba(236, 72, 153, 0.5);
     box-shadow:
-      0 1px 0 0 rgba(255, 255, 255, 0.6) inset,
-      8px 8px 0 0 #0e1e66;
+      0 1px 0 0 rgba(255, 255, 255, 0.08) inset,
+      0 40px 100px -28px rgba(236, 72, 153, 0.55);
   }
 
+  /* === Eyebrow: small mono caps, muted === */
   .eyebrow {
-    @apply font-mono text-[11px] uppercase tracking-[0.28em] text-matrix;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.28em;
+    color: var(--text-2);
+    font-weight: 500;
   }
 
-  /* Display class for big serif headlines. Uses Fraunces optical sizing. */
-  .display {
-    font-family: 'Fraunces', 'Times New Roman', serif;
-    font-weight: 700;
-    line-height: 0.92;
-    letter-spacing: -0.025em;
-    font-variation-settings: 'opsz' 144, 'SOFT' 30;
-  }
-  .display-italic {
-    font-family: 'Fraunces', 'Times New Roman', serif;
-    font-style: italic;
-    font-weight: 400;
-    line-height: 0.92;
-    letter-spacing: -0.015em;
-    font-variation-settings: 'opsz' 144, 'SOFT' 100;
-  }
-
+  /* === Buttons ===
+     Primary = animated brand gradient pill with violet glow.
+     Ghost   = thin white-on-dark pill that brightens on hover. */
   .btn-primary {
-    @apply inline-flex items-center gap-2 bg-matrix text-ink px-7 py-3.5 font-mono text-[12px] uppercase tracking-[0.2em] font-bold
-      hover:bg-bone hover:text-ink transition-colors duration-200 border border-matrix hover:border-bone rounded-none;
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.875rem 1.75rem;
+    border-radius: 999px;
+    font-family: 'Manrope', system-ui, sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: -0.005em;
+    color: #FFFFFF;
+    background-image:
+      linear-gradient(120deg, #8B5CF6 0%, #6366F1 35%, #EC4899 75%, #F472B6 100%);
+    background-size: 200% 100%;
+    background-position: 0% 50%;
+    border: 0;
+    box-shadow:
+      0 8px 28px -8px rgba(139, 92, 246, 0.55),
+      0 0 0 1px rgba(255, 255, 255, 0.06) inset;
+    cursor: pointer;
+    transition:
+      background-position 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow 0.3s;
   }
-  .btn-ghost {
-    @apply inline-flex items-center gap-2 text-bone px-7 py-3.5 font-mono text-[12px] uppercase tracking-[0.2em] font-bold
-      hover:text-matrix transition-colors duration-200 border border-bone/25 hover:border-matrix rounded-none;
+  .btn-primary:hover {
+    background-position: 100% 50%;
+    transform: translateY(-1px);
+    box-shadow:
+      0 14px 36px -8px rgba(236, 72, 153, 0.55),
+      0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+  }
+  .btn-primary:active {
+    transform: translateY(0);
   }
 
+  .btn-ghost {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.875rem 1.75rem;
+    border-radius: 999px;
+    font-family: 'Manrope', system-ui, sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.85);
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    cursor: pointer;
+    transition:
+      background 0.3s,
+      border-color 0.3s,
+      color 0.3s,
+      transform 0.3s;
+  }
+  .btn-ghost:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.28);
+    color: #FFFFFF;
+    transform: translateY(-1px);
+  }
+
+  /* Section padding identical to v3 spec */
   .section-pad {
     @apply px-5 sm:px-8 lg:px-16 py-24 md:py-32;
   }
 
-  /* Editorial horizontal rule */
+  /* Rules — flat translucent line, and a gradient accent variant */
   .rule-line {
     height: 1px;
-    background: #0e1e66;
-    opacity: 0.18;
+    background: rgba(255, 255, 255, 0.08);
   }
   .rule-line-accent {
     height: 1px;
-    background: #0033ff;
-    opacity: 0.35;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(139, 92, 246, 0.6) 50%,
+      transparent 100%
+    );
   }
 }
 
-/* Hairline sweep underline on hover for nav links */
+/* === Sweep underline on hover ===
+   Used by every nav link. Gradient stroke matches the brand gradient. */
 .sweep {
   position: relative;
 }
@@ -138,25 +287,19 @@ body {
   display: block;
   width: 0;
   height: 1px;
-  background: #0033ff;
-  transition: width 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  background: linear-gradient(90deg, #8B5CF6 0%, #EC4899 100%);
+  transition: width 0.5s cubic-bezier(0.22, 1, 0.36, 1);
 }
 .sweep:hover::after {
   width: 100%;
 }
 
-/* Subtle paper grain — almost invisible, just enough to break up flat color */
+/* Legacy paper-grain class — kept as no-op so old refs don't 404 */
 .paper-grain {
-  background-image:
-    radial-gradient(
-      circle at 1px 1px,
-      rgba(14, 30, 102, 0.025) 1px,
-      transparent 0
-    );
-  background-size: 4px 4px;
+  background: transparent;
 }
 
-/* Honor reduced-motion preference (UI/UX Pro Max §1: reduced-motion) */
+/* === Honor reduced-motion preference === */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -165,5 +308,8 @@ body {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+  .display-italic {
+    animation: none !important;
   }
 }

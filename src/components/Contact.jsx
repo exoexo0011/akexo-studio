@@ -51,7 +51,7 @@ const variants = {
 
 export default function Contact() {
   return (
-    <section id="contact" className="relative section-pad bg-ink">
+    <section id="contact" className="relative section-pad">
       <div className="mx-auto max-w-7xl">
         <SectionHeader
           index="05"
@@ -74,7 +74,8 @@ export default function Contact() {
             transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
             className="glass-matrix relative overflow-hidden p-8 md:p-12"
           >
-            <div className="pointer-events-none absolute -right-32 -top-32 h-80 w-80 rounded-full bg-matrix/20 blur-3xl" />
+            <div className="pointer-events-none absolute -right-32 -top-32 h-80 w-80 rounded-full bg-violet/30 blur-3xl" />
+            <div className="pointer-events-none absolute -left-20 -bottom-20 h-72 w-72 rounded-full bg-pink/25 blur-3xl" />
 
             <span className="eyebrow flex items-center gap-3 mb-5">
               <span className="h-px w-8 bg-matrix" />
@@ -83,7 +84,7 @@ export default function Contact() {
 
             <h3 className="display text-bone text-5xl md:text-6xl mb-6 leading-[0.92]">
               Book the{' '}
-              <span className="display-italic text-matrix">30-minute</span>{' '}
+              <span className="display-italic">30-minute</span>{' '}
               intro call.
             </h3>
 
@@ -110,16 +111,16 @@ export default function Contact() {
               </a>
             </div>
 
-            <div className="mt-12 grid grid-cols-2 gap-5 border-t border-matrix/25 pt-6 font-mono text-[11px] uppercase tracking-[0.22em]">
+            <div className="mt-12 grid grid-cols-2 gap-5 border-t border-white/[0.10] pt-6 font-mono text-[11px] uppercase tracking-[0.22em]">
               <div className="flex flex-col gap-1">
                 <span className="text-bone/45">Reply window</span>
-                <span className="text-matrix display-italic text-2xl mt-1">
+                <span className="display-italic text-2xl mt-1">
                   {'<'} 24h
                 </span>
               </div>
               <div className="flex flex-col gap-1">
                 <span className="text-bone/45">Timezone</span>
-                <span className="text-bone display-italic text-2xl mt-1">
+                <span className="display text-bone text-2xl mt-1">
                   GMT
                 </span>
               </div>
@@ -144,7 +145,7 @@ export default function Contact() {
                   whileHover={{ x: 6 }}
                   className="glass group flex items-center gap-5 p-5"
                 >
-                  <div className="relative inline-flex h-12 w-12 items-center justify-center border border-matrix/35 bg-matrix/5 text-matrix shrink-0">
+                  <div className="relative inline-flex h-12 w-12 items-center justify-center rounded-2xl border border-violet/30 bg-violet/[0.08] text-matrix shrink-0">
                     <Icon size={20} strokeWidth={1.5} />
                   </div>
                   <div className="flex-1 min-w-0">
@@ -152,7 +153,7 @@ export default function Contact() {
                       <span>{c.label}</span>
                       <span className="text-matrix">{c.handle}</span>
                     </div>
-                    <div className="font-body text-bone text-base group-hover:text-matrix transition-colors truncate">
+                    <div className="font-body text-bone text-base group-hover:opacity-80 transition-opacity truncate">
                       {c.value}
                     </div>
                   </div>

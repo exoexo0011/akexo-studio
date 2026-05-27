@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, ArrowRight } from 'lucide-react';
 
 const links = [
-  { href: '#services', label: 'Services', n: '01' },
-  { href: '#projects', label: 'Work', n: '02' },
-  { href: '#process', label: 'Process', n: '03' },
-  { href: '#pricing', label: 'Pricing', n: '04' },
-  { href: '#contact', label: 'Contact', n: '05' },
+  { href: '#services', label: 'Services' },
+  { href: '#projects', label: 'Work' },
+  { href: '#process', label: 'Process' },
+  { href: '#pricing', label: 'Pricing' },
+  { href: '#contact', label: 'Contact' },
 ];
 
 export default function Navbar() {
@@ -28,47 +28,51 @@ export default function Navbar() {
       transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
       className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
         scrolled
-          ? 'bg-ink/85 backdrop-blur-md border-b border-bone/10'
+          ? 'bg-[#050507]/70 backdrop-blur-xl border-b border-white/[0.06]'
           : 'bg-transparent'
       }`}
     >
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 sm:px-8 lg:px-12">
-        <a href="#top" className="flex items-baseline gap-2 group">
-          <span
-            className="display text-3xl text-bone group-hover:text-matrix transition-colors"
-            style={{ fontStyle: 'italic', fontVariationSettings: "'opsz' 144, 'SOFT' 100" }}
-          >
-            Akexo
+      <div className="mx-auto flex max-w-7xl items-center justify-between gap-6 px-5 py-4 sm:px-8 lg:grid lg:grid-cols-[auto_1fr_auto] lg:px-12">
+        {/* Logo — clean lowercase wordmark with a gradient dot */}
+        <a
+          href="#top"
+          className="flex items-center gap-0.5 group lg:justify-self-start"
+        >
+          <span className="display text-2xl tracking-tight text-bone group-hover:opacity-90 transition-opacity">
+            akexo
           </span>
-          <span className="hidden font-mono text-[10px] uppercase tracking-[0.3em] text-bone/45 sm:inline">
-            / studio
+          <span className="display-italic text-2xl leading-none -ml-0.5">.</span>
+          <span className="ml-3 hidden font-mono text-[10px] uppercase tracking-[0.3em] text-bone/40 sm:inline">
+            studio
           </span>
         </a>
 
-        <nav className="hidden items-center gap-7 md:flex">
+        {/* Center nav — premium minimal, gradient sweep on hover */}
+        <nav className="hidden lg:flex lg:justify-self-center items-center gap-1 px-2 py-1.5 rounded-full border border-white/[0.06] bg-white/[0.02] backdrop-blur-md">
           {links.map((l) => (
             <a
               key={l.href}
               href={l.href}
-              className="group flex items-baseline gap-1.5 font-mono text-[11px] uppercase tracking-[0.22em] text-bone/70 hover:text-matrix transition-colors"
+              className="px-4 py-2 font-body text-[13px] font-medium text-bone/70 hover:text-bone transition-colors rounded-full hover:bg-white/[0.05]"
             >
-              <span className="text-bone/30 group-hover:text-matrix/60 transition-colors">{l.n}</span>
-              <span className="sweep">{l.label}</span>
+              {l.label}
             </a>
           ))}
         </nav>
 
+        {/* Right CTA */}
         <a
           href="#contact"
-          className="hidden md:inline-flex items-center gap-2 bg-bone text-ink px-4 py-2 font-mono text-[11px] uppercase tracking-[0.22em] hover:bg-matrix transition-colors"
+          className="hidden lg:inline-flex lg:justify-self-end btn-primary !px-5 !py-2.5 !text-[13px]"
         >
           Book the call
-          <span aria-hidden>→</span>
+          <ArrowRight size={14} />
         </a>
 
+        {/* Mobile hamburger */}
         <button
           onClick={() => setOpen((s) => !s)}
-          className="md:hidden text-bone p-2 -mr-2"
+          className="lg:hidden text-bone p-2 -mr-2 rounded-full hover:bg-white/[0.06] transition-colors"
           aria-label="Toggle menu"
         >
           {open ? <X size={22} /> : <Menu size={22} />}
@@ -81,8 +85,8 @@ export default function Navbar() {
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-            className="md:hidden overflow-hidden border-t border-bone/10 bg-ink/95 backdrop-blur"
+            transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+            className="lg:hidden overflow-hidden border-t border-white/[0.06] bg-[#050507]/90 backdrop-blur-xl"
           >
             <div className="flex flex-col px-5 py-6 gap-1">
               {links.map((l) => (
@@ -90,18 +94,18 @@ export default function Navbar() {
                   key={l.href}
                   href={l.href}
                   onClick={() => setOpen(false)}
-                  className="flex items-baseline gap-3 px-2 py-3 font-mono text-sm uppercase tracking-[0.22em] text-bone hover:text-matrix"
+                  className="px-3 py-3 font-body text-base text-bone/85 hover:text-bone hover:bg-white/[0.04] rounded-xl transition-colors"
                 >
-                  <span className="text-bone/40">{l.n}</span>
                   {l.label}
                 </a>
               ))}
               <a
                 href="#contact"
                 onClick={() => setOpen(false)}
-                className="mt-3 inline-flex items-center justify-center gap-2 bg-bone text-ink px-4 py-3 font-mono text-xs uppercase tracking-[0.22em]"
+                className="btn-primary mt-4 justify-center"
               >
-                Book the call →
+                Book the call
+                <ArrowRight size={16} />
               </a>
             </div>
           </motion.div>

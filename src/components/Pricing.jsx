@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Check, Star } from 'lucide-react';
+import { Check, Star, ArrowRight } from 'lucide-react';
 import SectionHeader from './SectionHeader.jsx';
 
 const tiers = [
@@ -64,14 +64,14 @@ const variants = {
 
 export default function Pricing() {
   return (
-    <section id="pricing" className="relative section-pad bg-ink2">
+    <section id="pricing" className="relative section-pad">
       <div className="mx-auto max-w-7xl">
         <SectionHeader
           index="04"
           eyebrow="Pricing"
           title={
             <>
-              Pick a <span className="display-italic text-matrix">lane</span>.
+              Pick a <span className="display-italic">lane</span>.
             </>
           }
           sub="Fixed scope. Fixed fee. Fixed deadline. I do not bill by the hour and I do not chase scope. Most projects kick off within seven days of you signing."
@@ -92,7 +92,14 @@ export default function Pricing() {
               }`}
             >
               {t.featured && (
-                <div className="absolute -top-3 right-6 flex items-center gap-1.5 bg-matrix px-3 py-1.5 font-mono text-[10px] font-bold uppercase tracking-[0.25em] text-ink">
+                <div
+                  className="absolute -top-3 right-6 inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 font-mono text-[10px] font-bold uppercase tracking-[0.25em] text-white"
+                  style={{
+                    backgroundImage:
+                      'linear-gradient(120deg, #8B5CF6 0%, #6366F1 50%, #EC4899 100%)',
+                    boxShadow: '0 8px 24px -8px rgba(139, 92, 246, 0.55)',
+                  }}
+                >
                   <Star size={11} strokeWidth={2.5} />
                   Most picked
                 </div>
@@ -101,12 +108,12 @@ export default function Pricing() {
               <div className="flex items-center justify-between">
                 <span
                   className={`font-mono text-[10px] uppercase tracking-[0.25em] ${
-                    t.featured ? 'text-matrix' : 'text-bone/45'
+                    t.featured ? 'text-matrix' : 'text-bone/40'
                   }`}
                 >
                   {t.code}
                 </span>
-                <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-bone/45">
+                <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-bone/40">
                   {t.cadence}
                 </span>
               </div>
@@ -118,15 +125,17 @@ export default function Pricing() {
                 <p className="font-body text-sm text-bone/65">{t.pitch}</p>
               </div>
 
-              <div className="flex items-baseline gap-2 border-y border-bone/12 py-5">
-                <span
-                  className={`display text-5xl md:text-6xl ${
-                    t.featured ? 'text-matrix' : 'text-bone'
-                  }`}
-                >
-                  {t.price}
-                </span>
-                <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-bone/45">
+              <div className="flex items-baseline gap-2 border-y border-white/[0.08] py-5">
+                {t.featured ? (
+                  <span className="display-italic text-5xl md:text-6xl">
+                    {t.price}
+                  </span>
+                ) : (
+                  <span className="display text-5xl md:text-6xl text-bone">
+                    {t.price}
+                  </span>
+                )}
+                <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-bone/40">
                   USD / {t.cadence}
                 </span>
               </div>
@@ -151,23 +160,22 @@ export default function Pricing() {
 
               <a
                 href="#contact"
-                className={`mt-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 font-mono text-[12px] uppercase tracking-[0.2em] font-bold border transition-colors ${
-                  t.featured
-                    ? 'bg-matrix text-ink border-matrix hover:bg-bone hover:border-bone'
-                    : 'text-bone border-bone/20 hover:text-matrix hover:border-matrix'
+                className={`mt-auto justify-center ${
+                  t.featured ? 'btn-primary' : 'btn-ghost'
                 }`}
               >
-                {t.cta} →
+                {t.cta}
+                <ArrowRight size={14} />
               </a>
             </motion.div>
           ))}
         </div>
 
-        <p className="mt-12 text-center font-mono text-[11px] uppercase tracking-[0.3em] text-bone/50">
+        <p className="mt-12 text-center font-mono text-[11px] uppercase tracking-[0.3em] text-bone/45">
           Need something between tiers?{' '}
           <a
             href="#contact"
-            className="text-matrix hover:underline underline-offset-4"
+            className="display-italic hover:opacity-80 transition-opacity"
           >
             Email me the scope.
           </a>

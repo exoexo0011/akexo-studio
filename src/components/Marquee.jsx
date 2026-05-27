@@ -20,17 +20,17 @@ export default function Marquee() {
   return (
     <section
       aria-label="Tech stack"
-      className="relative border-y border-bone/10 py-5 overflow-hidden bg-ink"
+      className="relative border-y border-white/[0.06] py-5 overflow-hidden bg-white/[0.015] backdrop-blur-md"
     >
-      <div className="pointer-events-none absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-ink to-transparent z-10" />
-      <div className="pointer-events-none absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-ink to-transparent z-10" />
+      <div className="pointer-events-none absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-[#050507] to-transparent z-10" />
+      <div className="pointer-events-none absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-[#050507] to-transparent z-10" />
       <div className="flex w-max animate-marquee gap-12 whitespace-nowrap">
         {loop.map((it, i) => (
           <span
             key={i}
-            className="font-mono text-[11px] uppercase tracking-[0.3em] text-bone/55 hover:text-matrix transition-colors"
+            className="font-mono text-[11px] uppercase tracking-[0.3em] text-bone/55 hover:text-bone transition-colors"
           >
-            <span className="text-matrix mr-3">·</span>
+            <span className="display-italic mr-3">·</span>
             {it}
           </span>
         ))}

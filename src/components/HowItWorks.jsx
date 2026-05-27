@@ -36,7 +36,7 @@ const stepVariants = {
 
 export default function HowItWorks() {
   return (
-    <section id="process" className="relative section-pad bg-ink">
+    <section id="process" className="relative section-pad">
       <div className="mx-auto max-w-7xl">
         <SectionHeader
           index="03"
@@ -62,15 +62,22 @@ export default function HowItWorks() {
             className="hidden md:block pointer-events-none absolute inset-0 w-full h-full overflow-visible"
             preserveAspectRatio="none"
           >
+            <defs>
+              <linearGradient id="processGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#8B5CF6" />
+                <stop offset="50%" stopColor="#6366F1" />
+                <stop offset="100%" stopColor="#EC4899" />
+              </linearGradient>
+            </defs>
             <motion.line
               x1="16%"
               y1="20%"
               x2="84%"
               y2="80%"
-              stroke="#0033FF"
-              strokeWidth="1"
+              stroke="url(#processGradient)"
+              strokeWidth="1.5"
               strokeDasharray="4 6"
-              opacity="0.35"
+              opacity="0.7"
               initial={{ pathLength: 0 }}
               whileInView={{ pathLength: 1 }}
               viewport={{ once: true }}
@@ -101,7 +108,7 @@ export default function HowItWorks() {
               <h3 className="display text-bone text-4xl md:text-5xl mt-2">
                 {s.title}
               </h3>
-              <p className="font-body text-sm text-bone/70 leading-relaxed">
+              <p className="font-body text-sm text-bone/65 leading-relaxed">
                 {s.desc}
               </p>
             </motion.div>

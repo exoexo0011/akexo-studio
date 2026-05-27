@@ -4,33 +4,45 @@ export default {
   theme: {
     extend: {
       colors: {
-        // "Cobalt & Cream" v3 palette
-        // Token semantics preserved across redesigns:
-        //   ink   = primary background  (cream paper)
-        //   ink2  = lifted surface       (slightly lighter cream)
-        //   bone  = primary text         (deep cobalt — not black)
-        //   matrix = primary accent      (electric Klein cobalt)
-        //   coral  = rare warm accent    (status pulse only)
-        ink: '#F5F0E5',
-        ink2: '#FBF5EA',
-        bone: '#0E1E66',
-        mute: '#5C6892',
-        rule: '#D4CFC2',
+        // "Aurora Noir" v4 palette — kling.ai inspired
+        // Token semantics preserved across the v3 → v4 redesign so most
+        // markup keeps working untouched. Only the values changed:
+        //   ink   = primary background  (true near-black)
+        //   ink2  = lifted surface      (a hair brighter than ink)
+        //   bone  = primary text        (pure white)
+        //   mute  = secondary text      (cool light gray)
+        //   matrix = primary accent     (electric violet)
+        //   coral  = warm pulse accent  (rose-pink)
+        ink: '#050507',
+        ink2: '#0B0B14',
+        ink3: '#14141F',
+        bone: '#FFFFFF',
+        mute: '#A4A4B5',
+        rule: '#1F1F2A',
         matrix: {
-          DEFAULT: '#0033FF',
-          dim: '#0028CC',
-          glow: 'rgba(0, 51, 255, 0.45)',
+          DEFAULT: '#A78BFA',
+          dim: '#7C3AED',
+          deep: '#5B21B6',
+          glow: 'rgba(167, 139, 250, 0.5)',
         },
-        coral: '#FF6B47',
+        coral: '#F472B6',
+        // Brand gradient stops, exported so per-component gradients can be
+        // composed via Tailwind utilities (from-violet via-indigo to-pink).
+        violet: '#8B5CF6',
+        indigo: '#6366F1',
+        pink: '#EC4899',
+        rose: '#F472B6',
       },
       fontFamily: {
-        display: ['"Fraunces"', '"Times New Roman"', 'serif'],
-        body: ['"Onest"', 'system-ui', 'sans-serif'],
+        // Display: bold sans with personality (variable, can tighten optical
+        // size at huge display weights). Replaces Fraunces serif entirely.
+        display: ['"Bricolage Grotesque"', 'system-ui', 'sans-serif'],
+        body: ['"Manrope"', 'system-ui', 'sans-serif'],
         mono: ['"JetBrains Mono"', 'ui-monospace', 'monospace'],
       },
       letterSpacing: {
-        tightest: '-0.025em',
-        tighter: '-0.015em',
+        tightest: '-0.045em',
+        tighter: '-0.025em',
       },
       keyframes: {
         blink: {
@@ -43,18 +55,29 @@ export default {
         },
         drift: {
           '0%, 100%': { transform: 'translate(0, 0) scale(1)' },
-          '50%': { transform: 'translate(20px, -30px) scale(1.05)' },
+          '33%': { transform: 'translate(40px, -30px) scale(1.08)' },
+          '66%': { transform: 'translate(-30px, 20px) scale(0.95)' },
+        },
+        drift_slow: {
+          '0%, 100%': { transform: 'translate(0, 0) scale(1)' },
+          '50%': { transform: 'translate(-50px, 40px) scale(1.1)' },
         },
         marquee: {
           '0%': { transform: 'translateX(0)' },
           '100%': { transform: 'translateX(-50%)' },
         },
+        gradient_shift: {
+          '0%, 100%': { backgroundPosition: '0% 50%' },
+          '50%': { backgroundPosition: '100% 50%' },
+        },
       },
       animation: {
         blink: 'blink 1s steps(2, start) infinite',
         spin_slow: 'spin_slow 60s linear infinite',
-        drift: 'drift 14s ease-in-out infinite',
+        drift: 'drift 22s ease-in-out infinite',
+        drift_slow: 'drift_slow 30s ease-in-out infinite',
         marquee: 'marquee 50s linear infinite',
+        gradient_shift: 'gradient_shift 8s ease-in-out infinite',
       },
     },
   },

@@ -67,9 +67,6 @@ function useScrollControlledVideo(videoRef, sectionRef, disabled) {
     const section = sectionRef.current;
     if (!video || !section) return;
 
-    // Force the first frame to render so the video never shows as a black
-    // rectangle while metadata is still loading. Tiny offset (not 0) because
-    // some browsers don't paint the very first frame at exactly t=0.
     const paintFirstFrame = () => {
       try {
         if (video.currentTime < 0.05) video.currentTime = 0.05;
@@ -103,12 +100,8 @@ function useScrollControlledVideo(videoRef, sectionRef, disabled) {
       rafId = 0;
       if (!duration) return;
       const rect = section.getBoundingClientRect();
-      // Progress = how far the section's top has moved past the viewport top,
-      // clamped to [0, sectionHeight]. So the video plays forward as the user
-      // scrolls *out* of the hero.
       const scrolled = Math.min(Math.max(-rect.top, 0), rect.height);
       const progress = rect.height > 0 ? scrolled / rect.height : 0;
-      // Leave a hair of headroom at the end so we don't seek past duration.
       const target = Math.min(progress * duration, duration - 0.01);
       try {
         video.currentTime = target;
@@ -163,9 +156,7 @@ export default function Hero() {
       id="top"
       className="relative isolate flex min-h-[100svh] w-full flex-col overflow-hidden bg-ink"
     >
-      {/* === SCROLL-CONTROLLED VIDEO BACKGROUND ===
-          When prefers-reduced-motion is on, the scroll hook short-circuits and
-          we just paint the first frame as a static poster. */}
+      {/* === SCROLL-CONTROLLED VIDEO BACKGROUND === */}
       <video
         ref={videoRef}
         src="/hero.mp4"
@@ -185,15 +176,37 @@ export default function Hero() {
         }}
       />
 
-      {/* Readability overlay — keeps cobalt + bone text legible against the
-          video. Sits between the video and all foreground content. */}
+      {/* Readability overlay over the video. Slightly darker than v3 to keep
+          the new white type cleanly legible. */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0"
-        style={{ background: 'rgba(0, 0, 0, 0.55)' }}
+        style={{
+          background:
+            'linear-gradient(180deg, rgba(5,5,7,0.45) 0%, rgba(5,5,7,0.65) 50%, rgba(5,5,7,0.85) 100%)',
+        }}
       />
 
-      {/* === MASTHEAD ROW (mono small caps, cobalt rule under) === */}
+      {/* Soft brand tint blobs over the video for atmosphere parity with the
+          rest of the site (decorative only, no DOM weight on mobile). */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute -top-[10vw] -right-[10vw] h-[50vw] w-[50vw] rounded-full blur-[120px] opacity-50"
+        style={{
+          background:
+            'radial-gradient(circle, rgba(139, 92, 246, 0.5) 0%, transparent 65%)',
+        }}
+      />
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute -bottom-[15vw] -left-[10vw] h-[55vw] w-[55vw] rounded-full blur-[140px] opacity-40"
+        style={{
+          background:
+            'radial-gradient(circle, rgba(236, 72, 153, 0.45) 0%, transparent 65%)',
+        }}
+      />
+
+      {/* === MASTHEAD ROW === */}
       <motion.div
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
@@ -236,14 +249,21 @@ export default function Hero() {
             <span className="block">I build</span>
             <span className="block whitespace-nowrap overflow-visible">
               <span
-                className="display-italic text-matrix"
-                style={{ textShadow: '0 0 60px rgba(0,51,255,0.18)' }}
+                className="display-italic"
+                style={{
+                  textShadow:
+                    '0 0 80px rgba(167, 139, 250, 0.45), 0 0 40px rgba(236, 72, 153, 0.25)',
+                }}
               >
                 {typed || '\u00A0'}
               </span>
               <span
                 aria-hidden
-                className="ml-1 inline-block h-[0.7em] w-[0.06em] translate-y-1 bg-matrix align-middle animate-blink"
+                className="ml-1 inline-block h-[0.7em] w-[0.06em] translate-y-1 align-middle animate-blink"
+                style={{
+                  background:
+                    'linear-gradient(180deg, #A78BFA 0%, #EC4899 100%)',
+                }}
               />
             </span>
             <span className="block">that ship.</span>
@@ -252,14 +272,12 @@ export default function Hero() {
           {/* === SPLIT BLOCK: body + CTA / stats === */}
           <div className="mt-12 md:mt-16 grid gap-10 md:grid-cols-[1.2fr_1fr] md:gap-12 items-end">
             <motion.div custom={1} variants={fadeUp}>
-              <p className="font-body text-lg md:text-xl text-bone/85 leading-[1.55] max-w-xl">
+              <p className="font-body text-lg md:text-xl text-bone/80 leading-[1.55] max-w-xl">
                 I'm a solo AI developer. I take your brief on Monday and put a
                 working demo on your screen by{' '}
-                <em className="display-italic text-matrix not-italic">
-                  Friday
-                </em>
-                . Sites, apps, AI tools, automations: you message me, I write
-                the code. No agency layer between us.
+                <em className="display-italic not-italic">Friday</em>. Sites,
+                apps, AI tools, automations: you message me, I write the code.
+                No agency layer between us.
               </p>
             </motion.div>
 
@@ -277,7 +295,7 @@ export default function Hero() {
                 </a>
               </div>
 
-              <div className="grid grid-cols-3 gap-4 pt-4 border-t border-bone/15 font-mono text-[10px] uppercase tracking-[0.2em]">
+              <div className="grid grid-cols-3 gap-4 pt-4 border-t border-white/10 font-mono text-[10px] uppercase tracking-[0.2em]">
                 <Stat label="Projects" value="40+" />
                 <Stat label="Median" value="14d" />
                 <Stat label="Reply" value="< 24h" />
@@ -287,7 +305,7 @@ export default function Hero() {
         </motion.div>
       </div>
 
-      {/* === BOTTOM INDEX (magazine TOC) === */}
+      {/* === BOTTOM INDEX === */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -296,19 +314,19 @@ export default function Hero() {
       >
         <div className="rule-line-accent mb-4" />
         <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-2 font-mono text-[10px] uppercase tracking-[0.25em] text-bone/55">
-          <a href="#services" className="hover:text-matrix transition-colors sweep">
+          <a href="#services" className="hover:text-bone transition-colors sweep">
             <span className="text-bone/35">01</span> Services
           </a>
-          <a href="#projects" className="hover:text-matrix transition-colors sweep">
+          <a href="#projects" className="hover:text-bone transition-colors sweep">
             <span className="text-bone/35">02</span> Selected Work
           </a>
-          <a href="#process" className="hover:text-matrix transition-colors sweep">
+          <a href="#process" className="hover:text-bone transition-colors sweep">
             <span className="text-bone/35">03</span> Process
           </a>
-          <a href="#pricing" className="hover:text-matrix transition-colors sweep">
+          <a href="#pricing" className="hover:text-bone transition-colors sweep">
             <span className="text-bone/35">04</span> Pricing
           </a>
-          <a href="#contact" className="hover:text-matrix transition-colors sweep">
+          <a href="#contact" className="hover:text-bone transition-colors sweep">
             <span className="text-bone/35">05</span> Contact
           </a>
           <span className="hidden md:flex items-center gap-2 text-bone/35">

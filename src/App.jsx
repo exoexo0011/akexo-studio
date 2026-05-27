@@ -1,3 +1,4 @@
+import Atmosphere from './components/Atmosphere.jsx';
 import Navbar from './components/Navbar.jsx';
 import Hero from './components/Hero.jsx';
 import Services from './components/Services.jsx';
@@ -10,9 +11,11 @@ import Marquee from './components/Marquee.jsx';
 
 export default function App() {
   return (
-    <div className="relative min-h-screen overflow-x-hidden bg-ink text-bone">
+    <div className="relative min-h-screen overflow-x-hidden text-bone">
+      {/* Fixed background atmosphere — sits at z-index -10 behind everything */}
+      <Atmosphere />
       <Navbar />
-      <main>
+      <main className="relative">
         <Hero />
         <Marquee />
         <Services />

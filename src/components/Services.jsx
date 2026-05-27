@@ -50,7 +50,7 @@ const cardVariants = {
 
 export default function Services() {
   return (
-    <section id="services" className="relative section-pad bg-ink">
+    <section id="services" className="relative section-pad">
       <div className="mx-auto max-w-7xl">
         <SectionHeader
           index="01"
@@ -82,7 +82,7 @@ export default function Services() {
                 <div className="flex items-start justify-between">
                   <div className="relative">
                     <div
-                      className={`relative inline-flex items-center justify-center border border-matrix/40 bg-matrix/5 text-matrix ${
+                      className={`relative inline-flex items-center justify-center rounded-2xl border border-violet/30 bg-violet/[0.08] text-matrix ${
                         s.featured ? 'h-16 w-16' : 'h-12 w-12'
                       }`}
                     >
@@ -110,7 +110,7 @@ export default function Services() {
                 </div>
 
                 <p
-                  className={`font-body text-bone/70 leading-relaxed ${
+                  className={`font-body text-bone/65 leading-relaxed ${
                     s.featured ? 'text-base md:text-lg max-w-xl' : 'text-sm'
                   }`}
                 >
@@ -120,7 +120,7 @@ export default function Services() {
                 <ul
                   className={`mt-auto flex ${
                     s.featured ? 'flex-wrap gap-x-6 gap-y-2 pt-6' : 'flex-col gap-2 pt-5'
-                  } border-t border-bone/12`}
+                  } border-t border-white/[0.08]`}
                 >
                   {s.features.map((f) => (
                     <li
